@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
 import RegisterScreen from "./src/screens/RegisterScreen";
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
@@ -13,6 +13,7 @@ import {
   DrawerItemList,
   DrawerItem,
 } from "@react-navigation/drawer";
+import { NativeBaseProvider, Text, Box } from "native-base";
 
 function CustomDrawerContent(props) {
   return (
@@ -40,7 +41,9 @@ function MyDrawer() {
 export default function App() {
   return (
     <NavigationContainer>
-      <MyDrawer />
+      <NativeBaseProvider>
+        <MyDrawer />
+      </NativeBaseProvider>
     </NavigationContainer>
   );
 }
