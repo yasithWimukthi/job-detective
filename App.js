@@ -11,7 +11,6 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
   DrawerContentScrollView,
   DrawerItemList,
-  DrawerItem,
 } from "@react-navigation/drawer";
 import { NativeBaseProvider, Text, Box } from "native-base";
 
