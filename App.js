@@ -40,7 +40,7 @@ function MyDrawer() {
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
         <Drawer.Screen name="Companies" component={CompaniesHome} />
-        <Drawer.Screen name="Homes" component={HomeScreen} />
+        <Drawer.Screen name="Home" component={HomeScreen} />
         <Drawer.Screen name="Jobs" component={JobPost} />
         <Drawer.Screen name="Register" component={RegisterScreen} />
         <Drawer.Screen name="Login" component={LoginScreen} />
