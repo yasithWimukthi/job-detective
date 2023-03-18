@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button } from "native-base";
 import { Box, Select, CheckIcon, HStack } from "native-base";
 import { ScrollView, VStack, Divider } from "native-base";
 import {
@@ -84,7 +84,7 @@ export default function CompaniesHome({ navigation }) {
                 <Stack p="4" space={3}>
                   <Stack space={2}>
                     <Heading size="md" ml="-1">
-                      The Garden City
+                      <Text>The Garden City</Text>
                     </Heading>
                     <Text
                       fontSize="xs"
@@ -558,7 +558,6 @@ export default function CompaniesHome({ navigation }) {
           </Stack>
         </VStack>
       </ScrollView>
-      ;
     </View>
   );
 }
