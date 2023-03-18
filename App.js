@@ -51,7 +51,7 @@ export default function App() {
           component={MyDrawer}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="JobCreate" component={JobCreate} />
+        <Stack.Screen name="Create new Job" component={JobCreate} />
       </Stack.Navigator>
     </NavigationContainer>
   );
