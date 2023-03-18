@@ -13,6 +13,8 @@ import { Button, FlatList, TouchableOpacity } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
 import { firebase } from "../../firebaseConfig";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useIsFocused } from "@react-navigation/native";
+import { useRef } from "react";
 
 export default function CompaniesHome({ navigation, route }) {
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -35,6 +37,7 @@ export default function CompaniesHome({ navigation, route }) {
 
   const [locations, setLocations] = React.useState([]);
   const [industries, setIndustries] = React.useState([]);
+  const isFocused = useIsFocused();
 
   //get companies from firebase and set to companies state
   const getCompanies = async () => {
@@ -65,8 +68,11 @@ export default function CompaniesHome({ navigation, route }) {
 
   //create useEffect to get companies from firebase
   React.useEffect(() => {
-    getCompanies();
-  }, []);
+    if (isFocused) {
+      // Reload your data here
+      getCompanies();
+    }
+  }, [isFocused]);
 
   let counter = 0;
 
