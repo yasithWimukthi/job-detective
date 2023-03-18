@@ -1,68 +1,56 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { Component } from "react";
+import { StyleSheet, View, Text } from "react-native";
 
-const LoginScreen = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    const handleLogin = () => {
-        // Handle login logic here
-    };
-
+function Untitled(props) {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Login</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Email"
-                onChangeText={(text) => setEmail(text)}
-                value={email}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                onChangeText={(text) => setPassword(text)}
-                value={password}
-                secureTextEntry={true}
-            />
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
+            <View style={styles.rectStack}>
+                <View style={styles.rect}></View>
+                <View style={styles.rect2}>
+                    <Text style={styles.welcomeBack}>Welcome Back</Text>
+                </View>
+            </View>
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: "#fff"
     },
-    title: {
+    rect: {
+        top: 0,
+        width: 375,
+        height: 398,
+        position: "absolute",
+        backgroundColor: "rgba(65,63,185,1)",
+        borderBottomRightRadius: 70,
+        borderBottomLeftRadius: 70,
+        overflow: "hidden",
+        left: 0
+    },
+    rect2: {
+        top: 110,
+        left: 32,
+        width: 311,
+        height: 420,
+        position: "absolute",
+        backgroundColor: "#E6E6E6",
+        borderRadius: 29
+    },
+    welcomeBack: {
+        fontFamily: "roboto-700",
+        color: "#121212",
         fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 30,
+        marginTop: 28,
+        marginLeft: 76
     },
-    input: {
-        width: '80%',
-        height: 50,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
-        padding: 10,
-        marginBottom: 20,
-    },
-    button: {
-        backgroundColor: '#0066cc',
-        borderRadius: 5,
-        padding: 10,
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
+    rectStack: {
+        width: 375,
+        height: 530,
+        marginTop: 32
+    }
 });
 
-export default LoginScreen;
+export default Untitled;
