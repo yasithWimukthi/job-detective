@@ -17,6 +17,8 @@ import JobPost from "./src/screens/JobPosts";
 import JobCreate from "./src/screens/JobCreate";
 import JobMyPosts from "./src/screens/JobMyPosts";
 import LoginScreen from "./src/screens/LoginScreen";
+import JobView from "./src/screens/JobView";
+
 
 function CustomDrawerContent(props) {
   return (
@@ -58,6 +60,7 @@ export default function App() {
         />
         <Stack.Screen name="Create new Job" component={JobCreate} />
         <Stack.Screen name="My Job Postings" component={JobMyPosts} />
+        <Stack.Screen name="Job View" component={JobView} />
       </Stack.Navigator>
     </NavigationContainer>
   );
