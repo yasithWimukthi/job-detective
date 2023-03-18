@@ -18,6 +18,7 @@ import JobCreate from "./src/screens/JobCreate";
 import JobMyPosts from "./src/screens/JobMyPosts";
 import LoginScreen from "./src/screens/LoginScreen";
 import JobView from "./src/screens/JobView";
+import UserProfile from "./src/screens/UserProfile";
 
 
 function CustomDrawerContent(props) {
@@ -43,6 +44,7 @@ function MyDrawer() {
         <Drawer.Screen name="Jobs" component={JobPost} />
           <Drawer.Screen name="Register" component={RegisterScreen} />
           <Drawer.Screen name="Login" component={LoginScreen} />
+        <Drawer.Screen name="Profile" component={UserProfile} />
 
       </Drawer.Navigator>
     </NativeBaseProvider>
