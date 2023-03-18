@@ -8,13 +8,14 @@ const jobDescriptions = [
   "We are looking for a highly motivated and talented [POSITION] to join our team. As a [POSITION], you will be responsible for managing our customer service operations and ensuring that we provide exceptional support to our clients. You will work closely with other team members to identify areas for improvement and implement effective solutions. The ideal candidate will have excellent communication and problem-solving skills, as well as a strong commitment to customer satisfaction.",
   "Our company is seeking a skilled and experienced [POSITION] to join our team. As a [POSITION], you will be responsible for managing our financial operations and ensuring that we meet our financial targets. You will work closely with other team members to develop and implement financial strategies that will drive growth and profitability. The ideal candidate will have a solid understanding of financial management best practices, as well as excellent analytical and problem-solving skills.",
   "We are currently looking for a highly motivated and talented [POSITION] to join our team. As a [POSITION], you will be responsible for developing and implementing IT strategies to support our business operations. You will work closely with other team members to identify opportunities for innovation and implement effective solutions. The ideal candidate will have a strong understanding of IT infrastructure and cybersecurity, as well as excellent communication and project management skills.",
+  "Our company is seeking a skilled and experienced [POSITION] to join our team. As a [POSITION], you will be responsible for managing our sales operations and ensuring that we meet our sales targets. You will work closely with other team members to develop and implement sales strategies that will drive growth and profitability. The ideal candidate will have a solid understanding of sales management best practices, as well as excellent communication and leadership skills.",
   "Our company is seeking a skilled and experienced [POSITION] to join our team. As a [POSITION], you will be responsible for managing our human resources operations and ensuring that we attract and retain top talent. You will work closely with other team members to develop and implement HR policies and procedures that will support our business goals. ",
 ];
 
 function generateRandomJobDescription(position) {
   const randomIndex = Math.floor(Math.random() * jobDescriptions.length);
   const description = jobDescriptions[randomIndex];
-  return description.replace(/\[POSITION\]/g, "Software Developer");
+  return description.replace(/\[POSITION\]/g, position);
 }
 
 export default generateRandomJobDescription;
