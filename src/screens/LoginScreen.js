@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { signInWithEmailAndPassword } from "firebase/auth";
+
+import { auth } from "../../firebaseConfig";
+
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
@@ -7,6 +11,16 @@ const LoginScreen = () => {
 
     const handleLogin = () => {
         // Handle login logic here
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+            });
     };
 
     return (

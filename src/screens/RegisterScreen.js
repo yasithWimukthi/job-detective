@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
-import { auth } from "../../firebaseConfig";
+import { auth,firebase } from "../../firebaseConfig";
+import {Alert} from "native-base";
 
 const SignupScreen = () => {
   const [name, setName] = useState("");
@@ -17,46 +18,61 @@ const SignupScreen = () => {
 
   // const auth = getAuth();
 
-  const handleSignup = () => {
-    // createUserWithEmailAndPassword(auth, email, password)
-    //     .then((userCredential) => {
-    //         // Signed in
-    //         const user = userCredential.user;
-    //         // ...
-    //     })
-    //     .catch((error) => {
-    //         const errorCode = error.code;
-    //         const errorMessage = error.message;
-    //         console.log(errorCode, errorMessage);
-    //     });
+  const handleSignup =  () => {
+    createUserWithEmailAndPassword(auth, email, password)
+        .then(async (userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            const registeredUser = {
+                name,
+                email,
+                uid: user.uid,
+            }
+            try {
+                // save the job post object to the firestore database
+                await firebase.firestore().collection("users").add(registeredUser);
+
+                // navigate back to job post list page
+                // navigation.goBack();
+            } catch (error) {
+                console.log(error);
+                Alert.alert("Error", "Failed to save job post");
+            }
+            // ...
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+        });
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Sign up</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
-        onChangeText={(text) => setName(text)}
-        value={name}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        onChangeText={(text) => setEmail(text)}
-        value={email}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        onChangeText={(text) => setPassword(text)}
-        value={password}
-        secureTextEntry={true}
-      />
-      <TouchableOpacity style={styles.button} onPress={handleSignup}>
-        <Text style={styles.buttonText}>Sign up</Text>
-      </TouchableOpacity>
-    </View>
+      <View style={styles.container}>
+        <Text style={styles.title}>Sign up</Text>
+        <TextInput
+            style={styles.input}
+            placeholder="Name"
+            onChangeText={(text) => setName(text)}
+            value={name}
+        />
+        <TextInput
+            style={styles.input}
+            placeholder="Email"
+            onChangeText={(text) => setEmail(text)}
+            value={email}
+        />
+        <TextInput
+            style={styles.input}
+            placeholder="Password"
+            onChangeText={(text) => setPassword(text)}
+            value={password}
+            secureTextEntry={true}
+        />
+        <TouchableOpacity style={styles.button} onPress={handleSignup}>
+          <Text style={styles.buttonText}>Sign up</Text>
+        </TouchableOpacity>
+      </View>
   );
 };
 

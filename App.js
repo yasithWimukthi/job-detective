@@ -16,7 +16,14 @@ import { NativeBaseProvider, Text, Box } from "native-base";
 import JobPost from "./src/screens/JobPosts";
 import JobCreate from "./src/screens/JobCreate";
 import JobMyPosts from "./src/screens/JobMyPosts";
+<<<<<<< HEAD
 import AddNewCompany from "./src/screens/AddNewCompany";
+=======
+import LoginScreen from "./src/screens/LoginScreen";
+import JobView from "./src/screens/JobView";
+import JobUpdate from "./src/screens/JobUpdate";
+
+>>>>>>> 52c93ed8df1515e64fa761d5386c2374ebef2c5d
 
 function CustomDrawerContent(props) {
   return (
@@ -39,6 +46,9 @@ function MyDrawer() {
         <Drawer.Screen name="Companies" component={CompaniesHome} />
         <Drawer.Screen name="Homes" component={HomeScreen} />
         <Drawer.Screen name="Jobs" component={JobPost} />
+          <Drawer.Screen name="Register" component={RegisterScreen} />
+          <Drawer.Screen name="Login" component={LoginScreen} />
+
       </Drawer.Navigator>
     </NativeBaseProvider>
   );
@@ -57,6 +67,8 @@ export default function App() {
         <Stack.Screen name="My Job Postings" component={JobMyPosts} />
         <Stack.Screen name="Companies" component={CompaniesHome} />
         <Stack.Screen name="Add New Company" component={AddNewCompany} />
+        <Stack.Screen name="Job View" component={JobView} />
+        <Stack.Screen name="Update Job Posting" component={JobUpdate} />
       </Stack.Navigator>
     </NavigationContainer>
   );
