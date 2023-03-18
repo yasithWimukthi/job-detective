@@ -7,6 +7,8 @@ import {
   StyleSheet,
 } from "react-native";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigation } from "@react-navigation/native";
+
 
 import { auth,firebase } from "../../firebaseConfig";
 import {Alert} from "native-base";
@@ -16,7 +18,10 @@ const SignupScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // const auth = getAuth();
+    const navigation = useNavigation();
+
+
+    // const auth = getAuth();
 
   const handleSignup =  () => {
     createUserWithEmailAndPassword(auth, email, password)
@@ -32,8 +37,8 @@ const SignupScreen = () => {
                 // save the job post object to the firestore database
                 await firebase.firestore().collection("users").add(registeredUser);
 
-                // navigate back to job post list page
-                // navigation.goBack();
+                // navigate to user profile page
+                navigation.navigate("Profile");
             } catch (error) {
                 console.log(error);
                 Alert.alert("Error", "Failed to save job post");
