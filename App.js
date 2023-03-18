@@ -13,6 +13,8 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { NativeBaseProvider, Text, Box } from "native-base";
+import JobPost from "./src/screens/JobPost";
+import JobCreate from "./src/screens/JobCreate";
 
 function CustomDrawerContent(props) {
   return (
@@ -33,6 +35,7 @@ function MyDrawer() {
     >
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Companies" component={CompaniesHome} />
+      <Drawer.Screen name="Jobs" component={JobPost} />
     </Drawer.Navigator>
   );
 }
@@ -40,9 +43,14 @@ function MyDrawer() {
 export default function App() {
   return (
     <NavigationContainer>
-      <NativeBaseProvider>
-        <MyDrawer />
-      </NativeBaseProvider>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Root"
+          component={MyDrawer}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="JobCreate" component={JobCreate} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
