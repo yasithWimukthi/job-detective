@@ -13,6 +13,8 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { NativeBaseProvider, Text, Box } from "native-base";
+import JobPost from "./src/screens/JobPost";
+import JobCreate from "./src/screens/JobCreate";
 
 function CustomDrawerContent(props) {
   return (
@@ -27,22 +29,30 @@ const Stack = createNativeStackNavigator();
 
 function MyDrawer() {
   return (
-    <Drawer.Navigator
-      useLegacyImplementation
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
-    >
-      <Drawer.Screen name="Companies" component={CompaniesHome} />
-      <Drawer.Screen name="Homes" component={HomeScreen} />
-    </Drawer.Navigator>
+    <NativeBaseProvider>
+      <Drawer.Navigator
+        useLegacyImplementation
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+      >
+        <Drawer.Screen name="Homes" component={HomeScreen} />
+        <Drawer.Screen name="Companies" component={CompaniesHome} />
+        <Drawer.Screen name="Jobs" component={JobPost} />
+      </Drawer.Navigator>
+    </NativeBaseProvider>
   );
 }
 
 export default function App() {
   return (
     <NavigationContainer>
-      <NativeBaseProvider>
-        <MyDrawer />
-      </NativeBaseProvider>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Root"
+          component={MyDrawer}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="JobCreate" component={JobCreate} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
