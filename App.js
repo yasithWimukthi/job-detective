@@ -31,8 +31,8 @@ function MyDrawer() {
       useLegacyImplementation
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
-      <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Companies" component={CompaniesHome} />
+      <Drawer.Screen name="Homes" component={HomeScreen} />
     </Drawer.Navigator>
   );
 }
