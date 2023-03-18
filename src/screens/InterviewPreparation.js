@@ -64,13 +64,33 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList, Text } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
 import { useNavigation } from "@react-navigation/native";
-import interviewsDummy from "../data/interviews";
-import JobPostCard from "../components/JobCard";
+import InterviewCard from "../components/InterviewCard";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Loading from "../components/Loading";
 
 const JobPost = () => {
-  const [jobPosts, setJobPosts] = useState([interviewsDummy]);
+  const [jobPosts, setJobPosts] = useState([
+    {
+      id: 1,
+      question: "Tell me about yourself",
+      answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      isFavorite: false,
+    },
+    {
+      id: 2,
+      question: "What are your strengths?",
+      answer:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lor sectetur adipiscing elitLorem ipsum dolor sit amet, cons ectetur adipiscing elit",
+      isFavorite: false,
+    },
+    {
+      id: 3,
+      question: "What are your weaknesses?",
+      answer:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit qw e r  tttt koiwi ijcwhiuhnc uhwchb wvoinnol",
+      isFavorite: false,
+    },
+  ]);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
@@ -115,7 +135,7 @@ const JobPost = () => {
         <>
           <FlatList
             data={jobPosts}
-            renderItem={JobPostCard}
+            renderItem={InterviewCard}
             keyExtractor={(item) => item.id}
           />
           <FloatingAction
