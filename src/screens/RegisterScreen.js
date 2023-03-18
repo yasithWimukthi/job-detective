@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
-import { auth } from "../../firebaseConfig";
+import { auth,firebase } from "../../firebaseConfig";
+import {Alert} from "native-base";
 
 const SignupScreen = () => {
   const [name, setName] = useState("");
@@ -17,11 +18,26 @@ const SignupScreen = () => {
 
   // const auth = getAuth();
 
-  const handleSignup = () => {
+  const handleSignup =  () => {
     createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        .then(async (userCredential) => {
             // Signed in
             const user = userCredential.user;
+            const registeredUser = {
+                name,
+                email,
+                uid: user.uid,
+            }
+            try {
+                // save the job post object to the firestore database
+                await firebase.firestore().collection("users").add(registeredUser);
+
+                // navigate back to job post list page
+                // navigation.goBack();
+            } catch (error) {
+                console.log(error);
+                Alert.alert("Error", "Failed to save job post");
+            }
             // ...
         })
         .catch((error) => {
