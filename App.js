@@ -7,19 +7,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./src/screens/HomeScreen";
 import CompaniesHome from "./src/screens/CompaniesHome";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-} from "@react-navigation/drawer";
-import { NativeBaseProvider, Text, Box } from "native-base";
 import JobPost from "./src/screens/JobPosts";
 import JobCreate from "./src/screens/JobCreate";
 import JobMyPosts from "./src/screens/JobMyPosts";
 import AddNewCompany from "./src/screens/AddNewCompany";
 import LoginScreen from "./src/screens/LoginScreen";
 import JobView from "./src/screens/JobView";
+import UserProfile from "./src/screens/UserProfile";
 import JobUpdate from "./src/screens/JobUpdate";
 import { FontAwesome5 } from "@expo/vector-icons";
 
@@ -73,8 +67,19 @@ function MyDrawer() {
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
         <Drawer.Screen name="Companies" component={CompaniesHome} />
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from "@react-navigation/drawer";
+import { NativeBaseProvider, Text, Box } from "native-base";
         <Drawer.Screen name="Homes" component={HomeScreen} />
         <Drawer.Screen name="Jobs" component={JobPost} />
+          <Drawer.Screen name="Register" component={RegisterScreen} />
+          <Drawer.Screen name="Login" component={LoginScreen} />
+        <Drawer.Screen name="Profile" component={UserProfile} />
+
       </Drawer.Navigator>
     </NativeBaseProvider>
   );
