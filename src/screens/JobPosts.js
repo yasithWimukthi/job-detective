@@ -6,12 +6,15 @@ import { useNavigation } from "@react-navigation/native";
 import jobPostsDummy from "../data/jobs";
 import JobPostCard from "../components/JobCard";
 import { FontAwesome5 } from "@expo/vector-icons";
+import Loading from "../components/Loading";
 
 const JobPost = () => {
   const [jobPosts, setJobPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
   useEffect(() => {
+    setLoading(true);
     // Fetch job posts from Firebase Firestore
     const unsubscribe = firebase
       .firestore()
@@ -22,6 +25,7 @@ const JobPost = () => {
           posts.push({ ...doc.data(), id: doc.id });
         });
         setJobPosts(posts);
+        setLoading(false);
       });
 
     return () => unsubscribe();
@@ -44,21 +48,27 @@ const JobPost = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={jobPosts}
-        renderItem={JobPostCard}
-        keyExtractor={(item) => item.id}
-      />
-      <FloatingAction
-        actions={actions}
-        onPressItem={(name) => {
-          if (name === "addPost") {
-            navigation.navigate("Create new Job");
-          } else if (name === "myPosts") {
-            navigation.navigate("MyPosts");
-          }
-        }}
-      />
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <FlatList
+            data={jobPosts}
+            renderItem={JobPostCard}
+            keyExtractor={(item) => item.id}
+          />
+          <FloatingAction
+            actions={actions}
+            onPressItem={(name) => {
+              if (name === "addPost") {
+                navigation.navigate("Create new Job");
+              } else if (name === "myPosts") {
+                navigation.navigate("My Job Postings");
+              }
+            }}
+          />
+        </>
+      )}
     </View>
   );
 };

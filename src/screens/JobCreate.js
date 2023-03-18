@@ -22,8 +22,7 @@ const JobCreate = ({ navigation }) => {
   const [salary, setSalary] = useState("");
 
   useEffect(() => {
-    if (title)
-    setDescription(generateRandomJobDescription(title));
+    if (title) setDescription(generateRandomJobDescription(title));
   }, [title]);
 
   const handleDescriptionChange = (value) => {
@@ -42,6 +41,7 @@ const JobCreate = ({ navigation }) => {
 
       // create a new job post object
       const jobPost = {
+        //TODO: change userID to the current user's ID
         userID: firebase.auth()?.currentUser?.uid || "001",
         title,
         description,
