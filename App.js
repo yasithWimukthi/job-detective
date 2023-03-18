@@ -7,27 +7,54 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./src/screens/HomeScreen";
 import CompaniesHome from "./src/screens/CompaniesHome";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-} from "@react-navigation/drawer";
-import { NativeBaseProvider, Text, Box } from "native-base";
 import JobPost from "./src/screens/JobPosts";
 import JobCreate from "./src/screens/JobCreate";
 import JobMyPosts from "./src/screens/JobMyPosts";
+import AddNewCompany from "./src/screens/AddNewCompany";
 import LoginScreen from "./src/screens/LoginScreen";
 import JobView from "./src/screens/JobView";
 import UserProfile from "./src/screens/UserProfile";
+import JobUpdate from "./src/screens/JobUpdate";
+import { FontAwesome5 } from "@expo/vector-icons";
 
-
-function CustomDrawerContent(props) {
+const CustomDrawerContent = (props) => {
   return (
     <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
+      <View style={styles.drawerContent}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "start",
+            margin: 20,
+          }}
+        >
+          <FontAwesome5 name="briefcase" size={20} color="#4b4b4b" />
+          <Text
+            color="#4b4b4b"
+            fontSize="xl"
+            fontWeight="bold"
+            style={styles.drawerHeaderText}
+          >
+            Job Portal
+          </Text>
+        </View>
+
+        <DrawerItemList {...props} />
+        <View style={styles.bottomDrawerSection}>
+          <DrawerItem
+            label="Logout"
+            onPress={() => {
+              // handle logout
+
+              props.navigation.navigate("Login");
+            }}
+          />
+        </View>
+      </View>
     </DrawerContentScrollView>
   );
-}
+};
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -39,8 +66,15 @@ function MyDrawer() {
         useLegacyImplementation
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
-        <Drawer.Screen name="Homes" component={HomeScreen} />
         <Drawer.Screen name="Companies" component={CompaniesHome} />
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from "@react-navigation/drawer";
+import { NativeBaseProvider, Text, Box } from "native-base";
+        <Drawer.Screen name="Homes" component={HomeScreen} />
         <Drawer.Screen name="Jobs" component={JobPost} />
           <Drawer.Screen name="Register" component={RegisterScreen} />
           <Drawer.Screen name="Login" component={LoginScreen} />
@@ -62,17 +96,31 @@ export default function App() {
         />
         <Stack.Screen name="Create new Job" component={JobCreate} />
         <Stack.Screen name="My Job Postings" component={JobMyPosts} />
+        <Stack.Screen name="Companies" component={CompaniesHome} />
+        <Stack.Screen name="Add New Company" component={AddNewCompany} />
         <Stack.Screen name="Job View" component={JobView} />
+        <Stack.Screen name="Update Job Posting" component={JobUpdate} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  drawerContent: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+  },
+  drawerHeaderText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    margin: 20,
+  },
+  bottomDrawerSection: {
+    borderWidth: 1,
+    borderColor: "#f4f4f4",
+    marginBottom: 15,
+    borderRadius: 4,
+    top: 300,
   },
 });

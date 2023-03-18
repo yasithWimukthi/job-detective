@@ -2,14 +2,17 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { firebase } from "../../firebaseConfig";
 import Loading from "../components/Loading";
-import iconMapping from "../data/iconMapping";
-import getRandomColor from "../utils/RandomColor";
+import { useNavigation } from "@react-navigation/native";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { FloatingAction } from "react-native-floating-action";
+import { Alert } from "react-native";
 
 const JobView = ({ route }) => {
   const [jobPost, setJobPost] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [UsersPost, setUsersPost] = useState(false);
+
+  const navigation = useNavigation();
 
   const { id, iconName, iconColor } = route.params;
 
@@ -22,6 +25,13 @@ const JobView = ({ route }) => {
       .onSnapshot((doc) => {
         if (doc.exists) {
           setJobPost({ ...doc.data(), id: doc.id });
+
+          // check if the current user is the owner of the job post
+          //TODO: change userID to the current user's ID
+          if (doc.data().userID === "001") {
+            setUsersPost(true);
+          }
+
           setLoading(false);
         }
       });
@@ -41,11 +51,39 @@ const JobView = ({ route }) => {
     {
       text: "Delete",
       icon: <MaterialIcons name="delete-forever" size={24} color="white" />,
-      name: "delte",
+      name: "delete",
       color: "#cb0019",
       position: 2,
     },
   ];
+
+  const onDeletePress = async () => {
+    Alert.alert(
+      "Confirm Delete",
+      "Are you sure you want to delete this job posting?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Yes, Delete",
+          onPress: async () => {
+            // delete the job post from the database
+            await firebase
+              .firestore()
+              .collection("jobPosts")
+              .doc(id)
+              .delete()
+              .then(() => {
+                navigation.goBack();
+              });
+          },
+          style: "destructive",
+        },
+      ]
+    );
+  };
 
   const onApplyPress = () => {
     // Handle apply button press
@@ -90,16 +128,20 @@ const JobView = ({ route }) => {
           <TouchableOpacity style={styles.applyButton} onPress={onApplyPress}>
             <Text style={styles.applyButtonText}>Apply</Text>
           </TouchableOpacity>
-          <FloatingAction
-            actions={actions}
-            onPressItem={(name) => {
-              if (name === "addPost") {
-                navigation.navigate("Create new Job");
-              } else if (name === "myPosts") {
-                navigation.navigate("My Job Postings");
-              }
-            }}
-          />
+          {UsersPost && (
+            <FloatingAction
+              actions={actions}
+              onPressItem={(name) => {
+                if (name === "update") {
+                  navigation.navigate("Update Job Posting", {
+                    id: jobPost.id,
+                  });
+                } else if (name === "delete") {
+                  onDeletePress();
+                }
+              }}
+            />
+          )}
         </>
       )}
     </View>
