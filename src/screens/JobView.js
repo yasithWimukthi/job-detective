@@ -11,10 +11,7 @@ const JobView = ({ route }) => {
   const [jobPost, setJobPost] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [iconName, seticonName] = useState("");
-  const [iconColor, seticonColor] = useState("");
-
-  const { id } = route.params;
+  const { id, iconName, iconColor } = route.params;
 
   useEffect(() => {
     setLoading(true);
@@ -25,13 +22,6 @@ const JobView = ({ route }) => {
       .onSnapshot((doc) => {
         if (doc.exists) {
           setJobPost({ ...doc.data(), id: doc.id });
-
-          // Map job titles to corresponding FontAwesome icons
-          seticonName(iconMapping[doc.data().title] || "briefcase");
-
-          // Generate a random background color for the icon
-          seticonColor(getRandomColor());
-
           setLoading(false);
         }
       });

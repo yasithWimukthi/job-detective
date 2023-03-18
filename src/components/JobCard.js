@@ -18,7 +18,13 @@ const JobCard = ({ item, disableCard }) => {
   return (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => navigation.navigate("Job View", { id: item.id })}
+      onPress={() =>
+        navigation.navigate("Job View", {
+          id: item.id,
+          iconName: iconName,
+          iconColor: iconColor,
+        })
+      }
       disabled={disableCard}
     >
       <View
