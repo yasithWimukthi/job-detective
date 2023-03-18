@@ -2,6 +2,9 @@ import React from "react";
 import { View, Text, Button } from "native-base";
 import { Box, Select, CheckIcon, HStack } from "native-base";
 import { ScrollView, VStack, Divider } from "native-base";
+import { Wrap } from "native-base";
+import { FlatList } from "react-native";
+import { Spacer } from "native-base";
 import {
   Image,
   AspectRatio,
@@ -14,6 +17,48 @@ import {
 //function returns two box components with select components inside them with responsive width
 export default function CompaniesHome({ navigation }) {
   const [service, setService] = React.useState("ux");
+  const [companies, setCompanies] = React.useState([
+    {
+      id: 1,
+      name: "name1",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, Provident similique accusantium nemo autem",
+      ratings: 4,
+      location: "colombo",
+      industry: "IT",
+    },
+    {
+      id: 2,
+      name: "name2",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, Provident similique accusantium nemo autem",
+      ratings: 4,
+    },
+    {
+      id: 3,
+      name: "name3",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, Provident similique accusantium nemo autem",
+      ratings: 4,
+    },
+    {
+      id: 4,
+      name: "name4",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, Provident similique accusantium nemo autem",
+      ratings: 4,
+    },
+    {
+      id: 5,
+      name: "name5",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, Provident similique accusantium nemo autem",
+      ratings: 4,
+    },
+  ]);
+
+  let counter = 0;
+
   return (
     <View style={{ padding: 10, height: "100%" }}>
       <HStack>
@@ -58,10 +103,18 @@ export default function CompaniesHome({ navigation }) {
           </Select>
         </Box>
       </HStack>
-      <ScrollView>
-        <VStack space="1.0" mt="5" pl="1" pr="3">
-          <Stack direction="row" mb="5" mt="2" space={3}>
-            <Box alignItems="center" width="50%">
+
+      <Box
+        w={{
+          base: "100%",
+          md: "25%",
+        }}
+        mt={7}
+      >
+        <FlatList
+          data={companies}
+          renderItem={({ item }) => (
+            <Box alignItems="center" width="50%" mb={4} pr={3} ml={1}>
               <Box
                 width="100%"
                 rounded="lg"
@@ -84,21 +137,21 @@ export default function CompaniesHome({ navigation }) {
                 <Stack p="4" space={3}>
                   <Stack space={2}>
                     <Heading size="md" ml="-1">
-                      <Text>The Garden City</Text>
+                      {item.name}
                     </Heading>
                     <Text
                       fontSize="xs"
                       _light={{
-                        color: "violet.500",
+                        color: "coolGray.600",
                       }}
                       _dark={{
-                        color: "violet.400",
+                        color: "coolGray.200",
                       }}
                       fontWeight="500"
                       ml="-0.5"
                       mt="-1"
                     >
-                      The Silicon Valley of India.
+                      {item.description}
                     </Text>
                   </Stack>
 
@@ -109,455 +162,24 @@ export default function CompaniesHome({ navigation }) {
                   >
                     <HStack alignItems="center">
                       <Text
-                        color="coolGray.600"
+                        color="yellow.500"
                         _dark={{
-                          color: "warmGray.200",
+                          color: "yellow.400",
                         }}
-                        fontWeight="400"
+                        fontWeight="800"
                       >
-                        6 mins ago
+                        {item.ratings} Stars
                       </Text>
                     </HStack>
                   </HStack>
                 </Stack>
               </Box>
             </Box>
-            <Box alignItems="center" width="50%">
-              <Box
-                width="100%"
-                rounded="lg"
-                overflow="hidden"
-                borderColor="coolGray.200"
-                borderWidth="1"
-                _dark={{
-                  borderColor: "coolGray.600",
-                  backgroundColor: "gray.700",
-                }}
-                _web={{
-                  shadow: 2,
-                  borderWidth: 0,
-                }}
-                _light={{
-                  backgroundColor: "gray.50",
-                }}
-              >
-                <Box p="2" bg="primary.500" h={10} shadow={4}></Box>
-                <Stack p="4" space={3}>
-                  <Stack space={2}>
-                    <Heading size="md" ml="-1">
-                      The Garden City
-                    </Heading>
-                    <Text
-                      fontSize="xs"
-                      _light={{
-                        color: "violet.500",
-                      }}
-                      _dark={{
-                        color: "violet.400",
-                      }}
-                      fontWeight="500"
-                      ml="-0.5"
-                      mt="-1"
-                    >
-                      The Silicon Valley of India.
-                    </Text>
-                  </Stack>
-
-                  <HStack
-                    alignItems="center"
-                    space={4}
-                    justifyContent="space-between"
-                  >
-                    <HStack alignItems="center">
-                      <Text
-                        color="coolGray.600"
-                        _dark={{
-                          color: "warmGray.200",
-                        }}
-                        fontWeight="400"
-                      >
-                        6 mins ago
-                      </Text>
-                    </HStack>
-                  </HStack>
-                </Stack>
-              </Box>
-            </Box>
-          </Stack>
-          <Stack direction="row" mb="5" space={3}>
-            <Box alignItems="center" width="50%">
-              <Box
-                width="100%"
-                rounded="lg"
-                overflow="hidden"
-                borderColor="coolGray.200"
-                borderWidth="1"
-                _dark={{
-                  borderColor: "coolGray.600",
-                  backgroundColor: "gray.700",
-                }}
-                _web={{
-                  shadow: 2,
-                  borderWidth: 0,
-                }}
-                _light={{
-                  backgroundColor: "gray.50",
-                }}
-              >
-                <Box p="2" bg="primary.500" h={10} shadow={4}></Box>
-                <Stack p="4" space={3}>
-                  <Stack space={2}>
-                    <Heading size="md" ml="-1">
-                      The Garden City
-                    </Heading>
-                    <Text
-                      fontSize="xs"
-                      _light={{
-                        color: "violet.500",
-                      }}
-                      _dark={{
-                        color: "violet.400",
-                      }}
-                      fontWeight="500"
-                      ml="-0.5"
-                      mt="-1"
-                    >
-                      The Silicon Valley of India.
-                    </Text>
-                  </Stack>
-
-                  <HStack
-                    alignItems="center"
-                    space={4}
-                    justifyContent="space-between"
-                  >
-                    <HStack alignItems="center">
-                      <Text
-                        color="coolGray.600"
-                        _dark={{
-                          color: "warmGray.200",
-                        }}
-                        fontWeight="400"
-                      >
-                        6 mins ago
-                      </Text>
-                    </HStack>
-                  </HStack>
-                </Stack>
-              </Box>
-            </Box>
-            <Box alignItems="center" width="50%">
-              <Box
-                width="100%"
-                rounded="lg"
-                overflow="hidden"
-                borderColor="coolGray.200"
-                borderWidth="1"
-                _dark={{
-                  borderColor: "coolGray.600",
-                  backgroundColor: "gray.700",
-                }}
-                _web={{
-                  shadow: 2,
-                  borderWidth: 0,
-                }}
-                _light={{
-                  backgroundColor: "gray.50",
-                }}
-              >
-                <Box p="2" bg="primary.500" h={10} shadow={4}></Box>
-                <Stack p="4" space={3}>
-                  <Stack space={2}>
-                    <Heading size="md" ml="-1">
-                      The Garden City
-                    </Heading>
-                    <Text
-                      fontSize="xs"
-                      _light={{
-                        color: "violet.500",
-                      }}
-                      _dark={{
-                        color: "violet.400",
-                      }}
-                      fontWeight="500"
-                      ml="-0.5"
-                      mt="-1"
-                    >
-                      The Silicon Valley of India.
-                    </Text>
-                  </Stack>
-
-                  <HStack
-                    alignItems="center"
-                    space={4}
-                    justifyContent="space-between"
-                  >
-                    <HStack alignItems="center">
-                      <Text
-                        color="coolGray.600"
-                        _dark={{
-                          color: "warmGray.200",
-                        }}
-                        fontWeight="400"
-                      >
-                        6 mins ago
-                      </Text>
-                    </HStack>
-                  </HStack>
-                </Stack>
-              </Box>
-            </Box>
-          </Stack>
-          <Stack direction="row" mb="5" space={3}>
-            <Box alignItems="center" width="50%">
-              <Box
-                width="100%"
-                rounded="lg"
-                overflow="hidden"
-                borderColor="coolGray.200"
-                borderWidth="1"
-                _dark={{
-                  borderColor: "coolGray.600",
-                  backgroundColor: "gray.700",
-                }}
-                _web={{
-                  shadow: 2,
-                  borderWidth: 0,
-                }}
-                _light={{
-                  backgroundColor: "gray.50",
-                }}
-              >
-                <Box p="2" bg="primary.500" h={10} shadow={4}></Box>
-                <Stack p="4" space={3}>
-                  <Stack space={2}>
-                    <Heading size="md" ml="-1">
-                      The Garden City
-                    </Heading>
-                    <Text
-                      fontSize="xs"
-                      _light={{
-                        color: "violet.500",
-                      }}
-                      _dark={{
-                        color: "violet.400",
-                      }}
-                      fontWeight="500"
-                      ml="-0.5"
-                      mt="-1"
-                    >
-                      The Silicon Valley of India.
-                    </Text>
-                  </Stack>
-
-                  <HStack
-                    alignItems="center"
-                    space={4}
-                    justifyContent="space-between"
-                  >
-                    <HStack alignItems="center">
-                      <Text
-                        color="coolGray.600"
-                        _dark={{
-                          color: "warmGray.200",
-                        }}
-                        fontWeight="400"
-                      >
-                        6 mins ago
-                      </Text>
-                    </HStack>
-                  </HStack>
-                </Stack>
-              </Box>
-            </Box>
-            <Box alignItems="center" width="50%">
-              <Box
-                width="100%"
-                rounded="lg"
-                overflow="hidden"
-                borderColor="coolGray.200"
-                borderWidth="1"
-                _dark={{
-                  borderColor: "coolGray.600",
-                  backgroundColor: "gray.700",
-                }}
-                _web={{
-                  shadow: 2,
-                  borderWidth: 0,
-                }}
-                _light={{
-                  backgroundColor: "gray.50",
-                }}
-              >
-                <Box p="2" bg="primary.500" h={10} shadow={4}></Box>
-                <Stack p="4" space={3}>
-                  <Stack space={2}>
-                    <Heading size="md" ml="-1">
-                      The Garden City
-                    </Heading>
-                    <Text
-                      fontSize="xs"
-                      _light={{
-                        color: "violet.500",
-                      }}
-                      _dark={{
-                        color: "violet.400",
-                      }}
-                      fontWeight="500"
-                      ml="-0.5"
-                      mt="-1"
-                    >
-                      The Silicon Valley of India.
-                    </Text>
-                  </Stack>
-
-                  <HStack
-                    alignItems="center"
-                    space={4}
-                    justifyContent="space-between"
-                  >
-                    <HStack alignItems="center">
-                      <Text
-                        color="coolGray.600"
-                        _dark={{
-                          color: "warmGray.200",
-                        }}
-                        fontWeight="400"
-                      >
-                        6 mins ago
-                      </Text>
-                    </HStack>
-                  </HStack>
-                </Stack>
-              </Box>
-            </Box>
-          </Stack>
-          <Stack direction="row" mb="5" space={3}>
-            <Box alignItems="center" width="50%">
-              <Box
-                width="100%"
-                rounded="lg"
-                overflow="hidden"
-                borderColor="coolGray.200"
-                borderWidth="1"
-                _dark={{
-                  borderColor: "coolGray.600",
-                  backgroundColor: "gray.700",
-                }}
-                _web={{
-                  shadow: 2,
-                  borderWidth: 0,
-                }}
-                _light={{
-                  backgroundColor: "gray.50",
-                }}
-              >
-                <Box p="2" bg="primary.500" h={10} shadow={4}></Box>
-                <Stack p="4" space={3}>
-                  <Stack space={2}>
-                    <Heading size="md" ml="-1">
-                      The Garden City
-                    </Heading>
-                    <Text
-                      fontSize="xs"
-                      _light={{
-                        color: "violet.500",
-                      }}
-                      _dark={{
-                        color: "violet.400",
-                      }}
-                      fontWeight="500"
-                      ml="-0.5"
-                      mt="-1"
-                    >
-                      The Silicon Valley of India.
-                    </Text>
-                  </Stack>
-
-                  <HStack
-                    alignItems="center"
-                    space={4}
-                    justifyContent="space-between"
-                  >
-                    <HStack alignItems="center">
-                      <Text
-                        color="coolGray.600"
-                        _dark={{
-                          color: "warmGray.200",
-                        }}
-                        fontWeight="400"
-                      >
-                        6 mins ago
-                      </Text>
-                    </HStack>
-                  </HStack>
-                </Stack>
-              </Box>
-            </Box>
-            <Box alignItems="center" width="50%">
-              <Box
-                width="100%"
-                rounded="lg"
-                overflow="hidden"
-                borderColor="coolGray.200"
-                borderWidth="1"
-                _dark={{
-                  borderColor: "coolGray.600",
-                  backgroundColor: "gray.700",
-                }}
-                _web={{
-                  shadow: 2,
-                  borderWidth: 0,
-                }}
-                _light={{
-                  backgroundColor: "gray.50",
-                }}
-              >
-                <Box p="2" bg="primary.500" h={10} shadow={4}></Box>
-                <Stack p="4" space={3}>
-                  <Stack space={2}>
-                    <Heading size="md" ml="-1">
-                      The Garden City
-                    </Heading>
-                    <Text
-                      fontSize="xs"
-                      _light={{
-                        color: "violet.500",
-                      }}
-                      _dark={{
-                        color: "violet.400",
-                      }}
-                      fontWeight="500"
-                      ml="-0.5"
-                      mt="-1"
-                    >
-                      The Silicon Valley of India.
-                    </Text>
-                  </Stack>
-
-                  <HStack
-                    alignItems="center"
-                    space={4}
-                    justifyContent="space-between"
-                  >
-                    <HStack alignItems="center">
-                      <Text
-                        color="coolGray.600"
-                        _dark={{
-                          color: "warmGray.200",
-                        }}
-                        fontWeight="400"
-                      >
-                        6 mins ago
-                      </Text>
-                    </HStack>
-                  </HStack>
-                </Stack>
-              </Box>
-            </Box>
-          </Stack>
-        </VStack>
-      </ScrollView>
+          )}
+          numColumns={2}
+          keyExtractor={(item) => item.id}
+        />
+      </Box>
     </View>
   );
 }
