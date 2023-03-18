@@ -20,6 +20,7 @@ import AddNewCompany from "./src/screens/AddNewCompany";
 import LoginScreen from "./src/screens/LoginScreen";
 import JobView from "./src/screens/JobView";
 import JobUpdate from "./src/screens/JobUpdate";
+import EditCompany from "./src/screens/EditCompany";
 
 function CustomDrawerContent(props) {
   return (
@@ -64,6 +65,7 @@ export default function App() {
         <Stack.Screen name="Add New Company" component={AddNewCompany} />
         <Stack.Screen name="Job View" component={JobView} />
         <Stack.Screen name="Update Job Posting" component={JobUpdate} />
+        <Stack.Screen name="Edit Company" component={EditCompany} />
       </Stack.Navigator>
     </NavigationContainer>
   );

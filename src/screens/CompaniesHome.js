@@ -1,24 +1,20 @@
-import React, { useEffect } from "react";
-import { View, Text, Button } from "native-base";
-import { Box, Select, CheckIcon, HStack } from "native-base";
-import { ScrollView, VStack, Divider } from "native-base";
-import { Wrap } from "native-base";
-import { FlatList } from "react-native";
-import { Modal, FormControl, Input } from "native-base";
+import React from "react";
 import {
-  Image,
-  AspectRatio,
+  View,
+  Text,
+  Box,
+  Select,
+  CheckIcon,
+  HStack,
   Stack,
   Heading,
-  Center,
-  Container,
 } from "native-base";
+import { Button, FlatList, TouchableOpacity } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
-import { FontAwesome5 } from "@expo/vector-icons";
 import { firebase } from "../../firebaseConfig";
-//function returns two box components with select components inside them with responsive width
-export default function CompaniesHome({ navigation }) {
-  // const [service, setService] = React.useState("ux");
+import { FontAwesome5 } from "@expo/vector-icons";
+
+export default function CompaniesHome({ navigation, route }) {
   const [modalVisible, setModalVisible] = React.useState(false);
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
@@ -95,14 +91,19 @@ export default function CompaniesHome({ navigation }) {
     }
   };
 
-  //function to delete a company
-  const deleteCompany = async (id) => {
-    try {
-      await firebase.firestore().collection("companies").doc(id).delete();
-      getCompanies();
-    } catch (error) {
-      console.log(error);
-    }
+  // //function to delete a company
+  // const deleteCompany = async (id) => {
+  //   try {
+  //     await firebase.firestore().collection("companies").doc(id).delete();
+  //     getCompanies();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  //function to navigate to edit company page with company details
+  const editCompany = (company) => {
+    navigation.navigate("Edit Company", { company });
   };
 
   return (
@@ -180,7 +181,15 @@ export default function CompaniesHome({ navigation }) {
                   backgroundColor: "gray.50",
                 }}
               >
-                <Box p="2" bg="primary.600" h={10} shadow={4}></Box>
+                <Box p="2" bg="primary.600" h={10} shadow={4}>
+                  <FontAwesome5
+                    style={{ position: "absolute", right: 10, top: 10 }}
+                    name="edit"
+                    size={20}
+                    color="#bfbfbf"
+                    onPress={() => editCompany(item)}
+                  ></FontAwesome5>
+                </Box>
                 <Stack p="4" space={3}>
                   <Stack space={2}>
                     <Heading size="md" ml="-1">
