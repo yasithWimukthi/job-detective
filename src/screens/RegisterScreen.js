@@ -18,45 +18,45 @@ const SignupScreen = () => {
   // const auth = getAuth();
 
   const handleSignup = () => {
-    // createUserWithEmailAndPassword(auth, email, password)
-    //     .then((userCredential) => {
-    //         // Signed in
-    //         const user = userCredential.user;
-    //         // ...
-    //     })
-    //     .catch((error) => {
-    //         const errorCode = error.code;
-    //         const errorMessage = error.message;
-    //         console.log(errorCode, errorMessage);
-    //     });
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            // ...
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+        });
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Sign up</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
-        onChangeText={(text) => setName(text)}
-        value={name}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        onChangeText={(text) => setEmail(text)}
-        value={email}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        onChangeText={(text) => setPassword(text)}
-        value={password}
-        secureTextEntry={true}
-      />
-      <TouchableOpacity style={styles.button} onPress={handleSignup}>
-        <Text style={styles.buttonText}>Sign up</Text>
-      </TouchableOpacity>
-    </View>
+      <View style={styles.container}>
+        <Text style={styles.title}>Sign up</Text>
+        <TextInput
+            style={styles.input}
+            placeholder="Name"
+            onChangeText={(text) => setName(text)}
+            value={name}
+        />
+        <TextInput
+            style={styles.input}
+            placeholder="Email"
+            onChangeText={(text) => setEmail(text)}
+            value={email}
+        />
+        <TextInput
+            style={styles.input}
+            placeholder="Password"
+            onChangeText={(text) => setPassword(text)}
+            value={password}
+            secureTextEntry={true}
+        />
+        <TouchableOpacity style={styles.button} onPress={handleSignup}>
+          <Text style={styles.buttonText}>Sign up</Text>
+        </TouchableOpacity>
+      </View>
   );
 };
 
