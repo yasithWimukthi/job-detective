@@ -4,7 +4,7 @@ import { Box, Select, CheckIcon, HStack } from "native-base";
 import { ScrollView, VStack, Divider } from "native-base";
 import { Wrap } from "native-base";
 import { FlatList } from "react-native";
-import { Spacer } from "native-base";
+import { Modal, FormControl, Input } from "native-base";
 import {
   Image,
   AspectRatio,
@@ -13,10 +13,15 @@ import {
   Center,
   Container,
 } from "native-base";
-
+import { FloatingAction } from "react-native-floating-action";
+import { FontAwesome5 } from "@expo/vector-icons";
 //function returns two box components with select components inside them with responsive width
 export default function CompaniesHome({ navigation }) {
   const [service, setService] = React.useState("ux");
+  const [modalVisible, setModalVisible] = React.useState(false);
+  const initialRef = React.useRef(null);
+  const finalRef = React.useRef(null);
+
   const [companies, setCompanies] = React.useState([
     {
       id: 1,
@@ -64,9 +69,10 @@ export default function CompaniesHome({ navigation }) {
       <HStack>
         <Box width="50%" marginRight={1}>
           <Select
+            height="45"
             selectedValue={service}
             color="primary.50"
-            backgroundColor="primary.700"
+            backgroundColor="primary.900"
             accessibilityLabel="Select Service"
             placeholder="Select Service"
             onValueChange={(itemValue) => setService(itemValue)}
@@ -84,9 +90,10 @@ export default function CompaniesHome({ navigation }) {
         </Box>
         <Box width="50%" marginLeft={1}>
           <Select
+            height="45"
             selectedValue={service}
             color="primary.50"
-            backgroundColor="primary.700"
+            backgroundColor="primary.900"
             accessibilityLabel="Select Service"
             placeholder="Select Service"
             onValueChange={(itemValue) => setService(itemValue)}
@@ -103,7 +110,6 @@ export default function CompaniesHome({ navigation }) {
           </Select>
         </Box>
       </HStack>
-
       <Box
         w={{
           base: "100%",
@@ -133,7 +139,7 @@ export default function CompaniesHome({ navigation }) {
                   backgroundColor: "gray.50",
                 }}
               >
-                <Box p="2" bg="primary.500" h={10} shadow={4}></Box>
+                <Box p="2" bg="primary.600" h={10} shadow={4}></Box>
                 <Stack p="4" space={3}>
                   <Stack space={2}>
                     <Heading size="md" ml="-1">
@@ -180,6 +186,12 @@ export default function CompaniesHome({ navigation }) {
           keyExtractor={(item) => item.id}
         />
       </Box>
+      <FloatingAction
+        onPressMain={() => {
+          navigation.navigate("Add New Company");
+        }}
+        color="#155e75"
+      />
     </View>
   );
 }
