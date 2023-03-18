@@ -16,7 +16,9 @@ import { NativeBaseProvider, Text, Box } from "native-base";
 import JobPost from "./src/screens/JobPosts";
 import JobCreate from "./src/screens/JobCreate";
 import JobMyPosts from "./src/screens/JobMyPosts";
+import LoginScreen from "./src/screens/LoginScreen";
 import JobView from "./src/screens/JobView";
+
 
 function CustomDrawerContent(props) {
   return (
@@ -39,6 +41,9 @@ function MyDrawer() {
         <Drawer.Screen name="Homes" component={HomeScreen} />
         <Drawer.Screen name="Companies" component={CompaniesHome} />
         <Drawer.Screen name="Jobs" component={JobPost} />
+          <Drawer.Screen name="Register" component={RegisterScreen} />
+          <Drawer.Screen name="Login" component={LoginScreen} />
+
       </Drawer.Navigator>
     </NativeBaseProvider>
   );
