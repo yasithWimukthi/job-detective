@@ -80,6 +80,7 @@ const JobCreate = ({ navigation }) => {
                 salary: salary ? salary : "150000",
                 date: new Date().toLocaleString().split(",")[0],
               }}
+              disableCard={true}
             />
           </View>
           <Select
