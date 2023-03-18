@@ -95,6 +95,16 @@ export default function CompaniesHome({ navigation }) {
     }
   };
 
+  //function to delete a company
+  const deleteCompany = async (id) => {
+    try {
+      await firebase.firestore().collection("companies").doc(id).delete();
+      getCompanies();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <View style={{ padding: 10, height: "100%" }}>
       <HStack>
