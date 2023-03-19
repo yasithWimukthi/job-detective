@@ -1,5 +1,4 @@
-//screen to add new Interview questions and save it to the firebase database
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   TextInput,
@@ -14,7 +13,7 @@ import { Select } from "native-base";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { NativeBaseProvider } from "native-base";
 
-export default function AddInterviewQuestion({ navigation }) {
+const JobCreate = ({ navigation }) => {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [qtype, setQtype] = useState("");
@@ -53,57 +52,6 @@ export default function AddInterviewQuestion({ navigation }) {
     }
   };
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "#f2f2f2",
-      alignItems: "center",
-      padding: 10,
-    },
-    form: {
-      padding: 40,
-      width: "98%",
-      height: "98%",
-      backgroundColor: "#ffffff",
-
-      borderRadius: 10,
-    },
-    inputContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderWidth: 1,
-      borderColor: "#ccc",
-      padding: 10,
-      borderRadius: 5,
-      marginBottom: 24,
-    },
-    inputContainerDes: {
-      flexDirection: "row",
-      borderWidth: 1,
-      borderColor: "#ccc",
-      padding: 10,
-      borderRadius: 5,
-      marginBottom: 24,
-    },
-    input: {
-      marginLeft: 10,
-      flex: 1,
-    },
-    inputDes: {
-      marginLeft: 10,
-      flex: 1,
-    },
-    button: {
-      backgroundColor: "#0891b2",
-      padding: 15,
-      borderRadius: 5,
-    },
-    buttonText: {
-      color: "#fff",
-      textAlign: "center",
-    },
-  });
-
   return (
     <NativeBaseProvider>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -111,45 +59,38 @@ export default function AddInterviewQuestion({ navigation }) {
           <View style={styles.form}>
             <Select
               selectedValue={qtype}
-              placeholder="Select Question Type"
+              placeholder="Question Type"
               onValueChange={(itemValue) => setQtype(itemValue)}
               borderRadius={8}
-              height={50}
+              height={55}
               accessibilityLabel="Select Question Type"
               _selectedItem={{
                 bg: "grey.100",
                 endIcon: <FontAwesome5 name="check" size={20} color="grey" />,
                 borderRadius: 8,
               }}
+              style={styles.inputType}
             >
               <Select.Item label="Common" value="Common" />
               <Select.Item label="Technical" value="Technical" />
             </Select>
-
-            <View style={styles.inputContainer}>
-              <FontAwesome5 name="question" size={20} color="#000" />
-              <TextInput
-                maxLength={20}
-                style={styles.input}
-                placeholder="Question"
-                onChangeText={(text) => setQuestion(text)}
-                value={question}
-              />
-            </View>
-            <View style={styles.inputContainerDes}>
-              <FontAwesome5 name="pen-alt" size={20} color="#000" />
-              <TextInput
-                editable
-                multiline
-                numberOfLines={4}
-                maxLength={200}
-                style={styles.inputDes}
-                placeholder="Answer"
-                onChangeText={(text) => setAnswer(text)}
-                value={answer}
-              />
-            </View>
-
+            <TextInput
+              maxLength={20}
+              style={styles.input}
+              placeholder="Question"
+              onChangeText={(text) => setQuestion(text)}
+              value={question}
+            />
+            <TextInput
+              editable
+              multiline
+              numberOfLines={4}
+              maxLength={200}
+              style={styles.input}
+              placeholder="Answer"
+              onChangeText={(text) => setAnswer(text)}
+              value={answer}
+            />
             <TouchableOpacity style={styles.button} onPress={handleSubmit}>
               <Text style={styles.buttonText}>Add Interview</Text>
             </TouchableOpacity>
@@ -158,4 +99,52 @@ export default function AddInterviewQuestion({ navigation }) {
       </TouchableWithoutFeedback>
     </NativeBaseProvider>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f2f2f2",
+    alignItems: "center",
+    padding: 10,
+  },
+  form: {
+    padding: 40,
+    width: "98%",
+    height: "98%",
+    backgroundColor: "#ffffff",
+    borderRadius: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginVertical: 10,
+    width: "100%",
+  },
+  inputType: {
+    flex: 1,
+    fontSize: 14,
+  },
+  button: {
+    backgroundColor: "#1253bc",
+    padding: 15,
+    borderRadius: 5,
+    marginVertical: 10,
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  picker: {
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+});
+
+export default JobCreate;
