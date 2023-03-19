@@ -17,7 +17,6 @@ import UserProfile from "./src/screens/UserProfile";
 import JobUpdate from "./src/screens/JobUpdate";
 import AddInterviewQuestion from "./src/screens/AddInterviewQuestion";
 import InterviewFavourites from "./src/screens/InterviewFavourites";
-import InterviewsMyPosts from "./src/screens/InterviewsMyPosts";
 import InterviewEditScreen from "./src/screens/InterviewEditScreen";
 import MyInterviewPosts from "./src/screens/MyInterviewPosts";
 import { FontAwesome5 } from "@expo/vector-icons";
