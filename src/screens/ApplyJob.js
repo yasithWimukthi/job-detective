@@ -8,13 +8,13 @@ import {
     TouchableWithoutFeedback,
     Keyboard,
 } from "react-native";
-import {Input, NativeBaseProvider, Button, Stack, Center, Icon} from "native-base";
+import {Input, NativeBaseProvider, Button, Stack, Center, Icon, VStack} from "native-base";
 import {firebase, storage} from "../../firebaseConfig";
 import * as DocumentPicker from "expo-document-picker";
 import {ref, getDownloadURL, uploadBytesResumable} from "firebase/storage";
-import { Ionicons } from "@expo/vector-icons";
+import {Ionicons} from "@expo/vector-icons";
 
-const ApplyJob = ({route,navigation}) => {
+const ApplyJob = ({route, navigation}) => {
     // get current user details
     const [name, setName] = useState();
     const [email, setEmail] = useState("");
@@ -43,7 +43,7 @@ const ApplyJob = ({route,navigation}) => {
             .catch((error) => {
                 console.log(error);
             });
-    },[firebase.auth()?.currentUser?.uid]);
+    }, [firebase.auth()?.currentUser?.uid]);
 
 
     const pickDocument = async () => {
@@ -85,7 +85,7 @@ const ApplyJob = ({route,navigation}) => {
 
     const handleSubmit = async () => {
         // add details to applicants field of corresponding job post
-        await UploadFile(blobFile,fileName,isUploadCompleted);
+        await UploadFile(blobFile, fileName, isUploadCompleted);
 
         firebase
             .firestore()
@@ -161,32 +161,37 @@ const ApplyJob = ({route,navigation}) => {
                     {/*<TouchableOpacity style={styles.button} onPress={pickDocument}>*/}
                     {/*    <Text style={styles.buttonText}>Choose Resume</Text>*/}
                     {/*</TouchableOpacity>*/}
-                    <Button leftIcon={<Icon as={Ionicons} name="cloud-upload-outline" size="sm" />} isLoading={isLoading} _loading={{
-                        bg: "amber.400:alpha.70",
-                        _text: {
-                            color: "coolGray.700"
-                        }
-                    }} _spinner={{
-                        color: "white"
-                    }} isLoadingText="Submitting"
-                    onPress={pickDocument}>
-                        Pick Resume
-                    </Button>
+
                     {/*<TouchableOpacity style={styles.button} onPress={handleSubmit}>*/}
                     {/*    <Text style={styles.buttonText}>Apply</Text>*/}
                     {/*</TouchableOpacity>*/}
-                    <Button  isLoading={isSubmitting} _loading={{
-                        bg: "amber.400:alpha.70",
-                        _text: {
-                            color: "coolGray.700"
-                        }
-                    }} _spinner={{
-                        color: "white"
-                    }} isLoadingText="Submitting"
-                            onPress={handleSubmit}
-                    >
-                        Apply Now
-                    </Button>
+                    <VStack space={4} >
+                        <Button leftIcon={<Icon as={Ionicons} name="cloud-upload-outline" size="sm"/>} isLoading={isLoading}
+                                _loading={{
+                                    bg: "amber.400:alpha.70",
+                                    _text: {
+                                        color: "coolGray.700"
+                                    }
+                                }} _spinner={{
+                            color: "white"
+                        }} isLoadingText="Submitting"
+                                onPress={pickDocument}>
+                            Pick Resume
+                        </Button>
+
+                        <Button isLoading={isSubmitting} _loading={{
+                            bg: "amber.400:alpha.70",
+                            _text: {
+                                color: "coolGray.700"
+                            }
+                        }} _spinner={{
+                            color: "white"
+                        }} isLoadingText="Submitting"
+                                onPress={handleSubmit}
+                        >
+                            Apply Now
+                        </Button>
+                    </VStack>
                 </View>
             </TouchableWithoutFeedback>
         </NativeBaseProvider>
