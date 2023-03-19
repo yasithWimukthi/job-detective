@@ -5,40 +5,40 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { firebase } from "../../firebaseConfig";
 
 export default function InterviewMyCard({ item }) {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
   // //function to navigate to edit interview page with interview details
   // const editInterview = (item) => {
   //   navigation.navigate("Edit Interview", { item });
   // };
 
-  const onDeletePress = async () => {
-    Alert.alert(
-      "Confirm Delete",
-      "Are you sure you want to delete this job posting?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Yes, Delete",
-          onPress: async () => {
-            // delete the interviews post from the database
-            await firebase
-              .firestore()
-              .collection("interviews")
-              .doc(id)
-              .delete()
-              .then(() => {
-                navigation.goBack();
-              });
-          },
-          style: "destructive",
-        },
-      ]
-    );
-  };
+  // const onDeletePress = async () => {
+  //   Alert.alert(
+  //     "Confirm Delete",
+  //     "Are you sure you want to delete this job posting?",
+  //     [
+  //       {
+  //         text: "Cancel",
+  //         style: "cancel",
+  //       },
+  //       {
+  //         text: "Yes, Delete",
+  //         onPress: async () => {
+  //           // delete the interviews post from the database
+  //           await firebase
+  //             .firestore()
+  //             .collection("interviews")
+  //             .doc(id)
+  //             .delete()
+  //             .then(() => {
+  //               navigation.goBack();
+  //             });
+  //         },
+  //         style: "destructive",
+  //       },
+  //     ]
+  //   );
+  // };
 
   return (
     <TouchableOpacity style={styles.card}>
@@ -72,7 +72,7 @@ export default function InterviewMyCard({ item }) {
               name="trash"
               solid
               style={styles.deleteicon}
-              onPress={onDeletePress}
+              // onPress={onDeletePress}
             />
           </TouchableOpacity>
         </View>
