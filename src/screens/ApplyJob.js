@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
     View,
     TextInput,
@@ -8,20 +8,79 @@ import {
     TouchableWithoutFeedback,
     Keyboard,
 } from "react-native";
-import { NativeBaseProvider } from "native-base";
-import {firebase} from "../../firebaseConfig";
+import {Input, NativeBaseProvider} from "native-base";
+import {firebase, storage} from "../../firebaseConfig";
+import * as DocumentPicker from "expo-document-picker";
+import {ref, getDownloadURL, uploadBytesResumable} from "firebase/storage";
 
 
-const ApplyJob = ({ route }) => {
-    const [name, setName] = useState("");
+const ApplyJob = ({route}) => {
+    // get current user details
+    const [name, setName] = useState();
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [yearsOfExperience, setYearsOfExperience] = useState("");
     const [currentPosition, setCurrentPosition] = useState("");
-    const { id } = route.params;
+    const [fileName, setFileName] = useState("");
+    const [blobFile, setBlobFile] = useState(null);
+    const [resumeUrl, setResumeUrl] = useState(null);
+
+    const {id} = route.params;
+
+    useEffect(() => {
+        // get current user document
+        const userDoc = firebase.firestore().collection("users").doc(firebase.auth()?.currentUser?.uid).get()
+            .then((doc) => {
+                if (doc.exists) {
+                    console.log(doc.data())
+                    setName(doc.data().name)
+                    setEmail(doc.data().email)
+                    setPhone(doc.data().phone)
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    },[firebase.auth()?.currentUser?.uid]);
+
+
+    const pickDocument = async () => {
+        let result = await DocumentPicker.getDocumentAsync({})
+        if (result != null) {
+            const r = await fetch(result.uri);
+            const b = await r.blob();
+            setFileName(result.name)
+            setBlobFile(b)
+        }
+    }
+
+
+    const isUploadCompleted = (isCompleted) => {
+        console.log("isCompleted", isCompleted)
+    }
+
+    const UploadFile = (blobFile, fileName, isUploadCompleted) => {
+        if (!blobFile) return;
+        const sotrageRef = ref(storage, `myDocs/${fileName}`); //LINE A
+        const uploadTask = uploadBytesResumable(sotrageRef, blobFile); //LINE B
+        uploadTask.on(
+            "state_changed", null,
+            (error) => console.log(error),
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => { //LINE C
+                    console.log("File available at", downloadURL);
+                    isUploadCompleted(true)
+                    setResumeUrl(downloadURL)
+                    return downloadURL
+                });
+            }
+        );
+    }
 
     const handleSubmit = async () => {
         // add details to applicants field of corresponding job post
+        await UploadFile(blobFile,fileName,isUploadCompleted);
+
         firebase
             .firestore()
             .collection("jobPosts")
@@ -33,6 +92,7 @@ const ApplyJob = ({ route }) => {
                     phone,
                     yearsOfExperience,
                     currentPosition,
+                    resumeUrl,
                 }),
             })
             .then(() => {
@@ -57,7 +117,6 @@ const ApplyJob = ({ route }) => {
                         placeholder="Name"
                         value={name}
                         onChangeText={(value) => setName(value)}
-                        keyboardType="text"
                         required
                     />
                     <TextInput
@@ -89,9 +148,11 @@ const ApplyJob = ({ route }) => {
                         placeholder="Current Position"
                         value={currentPosition}
                         onValueChange={(value) => setCurrentPosition(value)}
-                        keyboardType="text"
                         required
                     />
+                    <TouchableOpacity style={styles.button} onPress={pickDocument}>
+                        <Text style={styles.buttonText}>Choose Resume</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                         <Text style={styles.buttonText}>Apply</Text>
                     </TouchableOpacity>
