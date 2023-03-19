@@ -16,6 +16,7 @@ import JobView from "./src/screens/JobView";
 import UserProfile from "./src/screens/UserProfile";
 import JobUpdate from "./src/screens/JobUpdate";
 import AddInterviewQuestion from "./src/screens/AddInterviewQuestion";
+import InterviewFavourites from "./src/screens/InterviewFavourites";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
@@ -113,6 +114,7 @@ export default function App() {
           name="Add new Interview"
           component={AddInterviewQuestion}
         />
+        <Stack.Screen name="My Favourites" component={InterviewFavourites} />
       </Stack.Navigator>
     </NavigationContainer>
   );

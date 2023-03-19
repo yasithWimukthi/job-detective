@@ -13,11 +13,10 @@ import InterviewCard from "../components/InterviewCard";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Loading from "../components/Loading";
 
-const InterviewPreparation = () => {
+const InterviewFavourites = () => {
   const [interviews, setInterviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
-  const [showCommon, setShowCommon] = useState(true);
 
   useEffect(() => {
     setLoading(true);
@@ -25,7 +24,7 @@ const InterviewPreparation = () => {
     const unsubscribe = firebase
       .firestore()
       .collection("interviews")
-      .where("qtype", "==", showCommon ? "Common" : "Technical")
+      .where("status", "==", true) // only show interviews where status is true
       .onSnapshot((querySnapshot) => {
         const posts = [];
         querySnapshot.forEach((doc) => {
@@ -36,7 +35,7 @@ const InterviewPreparation = () => {
       });
 
     return () => unsubscribe();
-  }, [showCommon]);
+  }, []);
 
   const actions = [
     {
@@ -61,28 +60,6 @@ const InterviewPreparation = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity
-          style={[styles.button, showCommon && styles.activeButton]}
-          onPress={() => setShowCommon(true)}
-        >
-          <Text
-            style={[styles.buttonText, showCommon && styles.buttonTextActive]}
-          >
-            Common
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, !showCommon && styles.activeButton]}
-          onPress={() => setShowCommon(false)}
-        >
-          <Text
-            style={[styles.buttonText, !showCommon && styles.buttonTextActive]}
-          >
-            Technical
-          </Text>
-        </TouchableOpacity>
-      </View>
       {loading ? (
         <Loading />
       ) : (
@@ -97,8 +74,6 @@ const InterviewPreparation = () => {
             onPressItem={(name) => {
               if (name === "addInterview") {
                 navigation.navigate("Add new Interview");
-              } else if (name === "myFavourites") {
-                navigation.navigate("My Favourites");
               } else if (name === "myQposts") {
                 navigation.navigate("My Interview Postings");
               }
@@ -147,4 +122,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InterviewPreparation;
+export default InterviewFavourites;
