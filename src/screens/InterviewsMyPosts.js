@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 import { FloatingAction } from "react-native-floating-action";
 import { firebase } from "../../firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
-import InterviewCard from "../components/InterviewCard";
+import InterviewMyCard from "../components/InterviewMyCard";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Loading from "../components/Loading";
 
@@ -14,7 +20,7 @@ const InterviewsMyPosts = () => {
 
   useEffect(() => {
     setLoading(true);
-    // Fetch interviews posts from Firebase Firestore
+    // Fetch interviews question from Firebase Firestore
     const unsubscribe = firebase
       .firestore()
       .collection("interviews")
@@ -62,7 +68,7 @@ const InterviewsMyPosts = () => {
         <>
           <FlatList
             data={interviews}
-            renderItem={({ item }) => <InterviewCard item={item} />}
+            renderItem={InterviewMyCard}
             keyExtractor={(item) => item.id}
           />
           <FloatingAction
@@ -86,9 +92,37 @@ const InterviewsMyPosts = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#f9f9f9",
     paddingHorizontal: 5,
-    paddingTop: 10,
+    padding: 10,
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    marginBottom: 10,
+  },
+  button: {
+    flex: 1,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    marginRight: 5,
+  },
+  activeButton: {
+    backgroundColor: "#1253bc",
+  },
+  buttonText: {
+    fontSize: 16,
+    color: "#3f3f3f",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  buttonTextActive: {
+    color: "#fff",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
 

@@ -1,7 +1,7 @@
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-const InterviewCard = ({ item }) => {
+const InterviewMyCard = ({ item }) => {
   return (
     <TouchableOpacity style={styles.card}>
       <View style={styles.textContainer}>
@@ -9,7 +9,7 @@ const InterviewCard = ({ item }) => {
           <Text style={styles.question} numberOfLines={1} ellipsizeMode="tail">
             {item.question}
           </Text>
-          <TouchableOpacity style={styles.heartIcon}>
+          <TouchableOpacity style={styles.Icon}>
             <FontAwesome5
               name="heart"
               solid
@@ -20,6 +20,22 @@ const InterviewCard = ({ item }) => {
         <Text style={styles.answer} ellipsizeMode="tail">
           {item.answer}
         </Text>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.Icon}>
+            <FontAwesome5
+              name="edit"
+              solid
+              style={[styles.updateicon, item.status && styles.iconFavorite]}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.Icon}>
+            <FontAwesome5
+              name="trash"
+              solid
+              style={[styles.deleteicon, item.status && styles.iconFavorite]}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -55,6 +71,13 @@ const styles = StyleSheet.create({
   iconFavorite: {
     color: "red",
   },
+  updateicon: {
+    fontSize: 20,
+    color: "#ccc",
+  },
+  deleteicon: {
+    color: "red",
+  },
   textContainer: {
     flex: 1,
   },
@@ -67,7 +90,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#3f3f3f",
   },
-  heartIcon: {
+  Icon: {
     width: 30,
     height: 30,
     justifyContent: "center",
@@ -75,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InterviewCard;
+export default InterviewMyCard;
