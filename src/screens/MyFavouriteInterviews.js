@@ -7,13 +7,12 @@ import {
   Text,
 } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
-import { Alert } from "react-native";
 import { firebase } from "../../firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Loading from "../components/Loading";
 
-const MyInterviewPosts = () => {
+const MyFavouriteInterviews = () => {
   const [interviews, setInterviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
@@ -24,6 +23,7 @@ const MyInterviewPosts = () => {
     const unsubscribe = firebase
       .firestore()
       .collection("interviews")
+      .where("status", "==", true) // only show interviews where status is true
       .onSnapshot((querySnapshot) => {
         const posts = [];
         querySnapshot.forEach((doc) => {
@@ -60,39 +60,6 @@ const MyInterviewPosts = () => {
     },
   ];
 
-  //function to navigate to edit interview page with interview details
-  const editInterview = (item) => {
-    navigation.navigate("Edit Interview", { item });
-  };
-
-  const onDeletePress = async (id) => {
-    Alert.alert(
-      "Confirm Delete",
-      "Are you sure you want to delete this interview question and answer?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Yes, Delete",
-          onPress: async () => {
-            // delete the interviews post from the database
-            await firebase
-              .firestore()
-              .collection("interviews")
-              .doc(id)
-              .delete()
-              .then(() => {
-                navigation.navigate("My Interview Postings");
-              });
-          },
-          //   style: "destructive",
-        },
-      ]
-    );
-  };
-
   return (
     <View style={styles.container}>
       {loading ? (
@@ -112,30 +79,20 @@ const MyInterviewPosts = () => {
                     >
                       {item.question}
                     </Text>
+                    <TouchableOpacity style={styles.heartIcon}>
+                      <FontAwesome5
+                        name="heart"
+                        solid
+                        style={[
+                          styles.icon,
+                          item.status && styles.iconFavorite,
+                        ]}
+                      />
+                    </TouchableOpacity>
                   </View>
                   <Text style={styles.answer} ellipsizeMode="tail">
                     {item.answer}
                   </Text>
-                  <View style={styles.footer}>
-                    <TouchableOpacity style={styles.Icon1}>
-                      <FontAwesome5
-                        name="edit"
-                        solid
-                        style={styles.updateicon}
-                        onPress={() => editInterview(item)}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.Icon1}
-                      onPress={() => onDeletePress(item.id)}
-                    >
-                      <FontAwesome5
-                        name="trash"
-                        solid
-                        style={styles.deleteicon}
-                      />
-                    </TouchableOpacity>
-                  </View>
                 </View>
               </TouchableOpacity>
             )}
@@ -216,17 +173,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 5,
   },
-  footer: {
-    flexDirection: "row",
-    paddingTop: 10,
-    paddingBottom: 5,
-  },
-  updateicon: {
+  icon: {
     fontSize: 20,
-    color: "#1253bc",
+    color: "#e3e3e3",
   },
-  deleteicon: {
-    fontSize: 20,
+  iconFavorite: {
     color: "red",
   },
   textContainer: {
@@ -241,11 +192,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#3f3f3f",
   },
-  Icon1: {
+  heartIcon: {
     width: 30,
     height: 30,
-    alignItems: "flex-end",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
-export default MyInterviewPosts;
+export default MyFavouriteInterviews;
