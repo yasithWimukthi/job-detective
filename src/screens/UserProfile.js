@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, {Component, useEffect, useState} from "react";
 import {StyleSheet, View, Image, Text, TouchableOpacity} from "react-native";
 import { Button, Actionsheet, useDisclose, Box, Center, NativeBaseProvider } from "native-base";
+import {firebase} from "../../firebaseConfig";
 
 
 
@@ -34,6 +35,45 @@ function UserProfile(props) {
         onClose
     } = useDisclose();
 
+    // get applied jobs details of current user
+    const [appliedJobs, setAppliedJobs] = useState([]);
+    const [user, setUser] = useState(null);
+
+    // useEffect(() => {
+    //     getAppliedJobsOfUser(firebase.auth()?.currentUser?.uid);
+    //     getCurrentUser();
+    // })
+
+    const getCurrentUser = async () => {
+        try {
+            firebase
+                .firestore()
+                .collection("users")
+                .doc(firebase.auth()?.currentUser?.uid)
+                .onSnapshot((doc) => {
+                    if (doc.exists) {
+                        setUser({ ...doc.data(), id: doc.id });
+                        console.log(doc.data())
+                    }
+                });
+            // setUser(user);
+            // console.log(user);
+        }catch (error) {
+            console.log(error);
+        }
+    }
+
+    const getAppliedJobsOfUser = async (userID) => {
+        const appliedJobsArr = [];
+        try {
+            const querySnapshot = await firebase.firestore().collection("users").doc(userID);
+            const appliedJobs = querySnapshot.get("appliedJobs");
+            console.log(appliedJobs);
+        }catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <View style={styles.container}>
             <TouchableOpacity activeOpacity = { .5 } onPress={onOpen }>
@@ -45,7 +85,7 @@ function UserProfile(props) {
                 style={styles.image}
             ></Image>
             </TouchableOpacity>
-            <Text style={styles.name}>NAME</Text>
+            <Text style={styles.name}>kjb</Text>
             <Text style={styles.description}>
                 description description description description description description
             </Text>

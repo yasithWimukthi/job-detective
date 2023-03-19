@@ -14,6 +14,7 @@ import { FloatingAction } from "react-native-floating-action";
 import { Alert } from "react-native";
 import Toast from "react-native-toast-message";
 
+
 const JobView = ({ route }) => {
   const [jobPost, setJobPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -125,21 +126,25 @@ const JobView = ({ route }) => {
     console.log(firebase.auth()?.currentUser?.uid);
     // add applied jobs to the current user document
     firebase
-      .firestore()
-      .collection("users")
-      .doc(firebase.auth()?.currentUser?.uid)
-      .update({
-        appliedJobs: firebase.firestore.FieldValue.arrayUnion(id),
-      })
-      .then(() => {
-        // display alert message
-        showSuccessToast();
-        console.log("Applied successfully");
-      })
-      .catch((error) => {
-        console.log(error);
-        Alert.alert("Error", "Failed to apply for this job");
-      });
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth()?.currentUser?.uid)
+        .update({
+            appliedJobs: firebase.firestore.FieldValue.arrayUnion(id),
+        }
+        )
+        .then(() => {
+          // display alert message
+          navigation.navigate("Apply Job", {
+            id: id,
+          });
+            showSuccessToast();
+            console.log("Applied successfully");
+        })
+        .catch((error) => {
+            console.log(error);
+            Alert.alert("Error", "Failed to apply for this job");
+        })
 
     //get user document match UID field to current user id
   };

@@ -24,6 +24,7 @@ import {
 } from "@react-navigation/drawer";
 import { NativeBaseProvider, Text, Box } from "native-base";
 import EditCompany from "./src/screens/EditCompany";
+import ApplyJob from "./src/screens/ApplyJob";
 
 const CustomDrawerContent = (props) => {
   return (
@@ -105,6 +106,7 @@ export default function App() {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Profile" component={UserProfile} />
         <Stack.Screen name="Edit Company" component={EditCompany} />
+        <Stack.Screen name="Apply Job" component={ApplyJob} />
       </Stack.Navigator>
     </NavigationContainer>
   );
