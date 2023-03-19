@@ -74,7 +74,7 @@ const JobPost = () => {
       id: 1,
       question: "Tell me about yourself",
       answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      isFavorite: false,
+      isFavorite: true,
     },
     {
       id: 2,
