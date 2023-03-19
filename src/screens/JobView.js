@@ -9,6 +9,7 @@ import { Alert } from "react-native";
 import Toast from 'react-native-toast-message';
 
 
+
 const JobView = ({ route }) => {
   const [jobPost, setJobPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -108,6 +109,9 @@ const JobView = ({ route }) => {
         )
         .then(() => {
           // display alert message
+          navigation.navigate("Apply Job", {
+            id: id,
+          });
             showSuccessToast();
             console.log("Applied successfully");
         })
