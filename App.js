@@ -19,6 +19,7 @@ import AddInterviewQuestion from "./src/screens/AddInterviewQuestion";
 import InterviewFavourites from "./src/screens/InterviewFavourites";
 import InterviewsMyPosts from "./src/screens/InterviewsMyPosts";
 import InterviewEditScreen from "./src/screens/InterviewEditScreen";
+import MyInterviewPosts from "./src/screens/MyInterviewPosts";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
@@ -116,7 +117,7 @@ export default function App() {
         <Stack.Screen name="Edit Interview" component={InterviewEditScreen} />
         <Stack.Screen
           name="My Interview Postings"
-          component={InterviewsMyPosts}
+          component={MyInterviewPosts}
         />
         <Stack.Screen
           name="Add new Interview"

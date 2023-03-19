@@ -5,40 +5,40 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { firebase } from "../../firebaseConfig";
 
 export default function InterviewMyCard({ item }) {
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
 
-  // //function to navigate to edit interview page with interview details
-  // const editInterview = (item) => {
-  //   navigation.navigate("Edit Interview", { item });
-  // };
+  //function to navigate to edit interview page with interview details
+  const editInterview = (item) => {
+    navigation.navigate("Edit Interview", { item });
+  };
 
-  // const onDeletePress = async () => {
-  //   Alert.alert(
-  //     "Confirm Delete",
-  //     "Are you sure you want to delete this job posting?",
-  //     [
-  //       {
-  //         text: "Cancel",
-  //         style: "cancel",
-  //       },
-  //       {
-  //         text: "Yes, Delete",
-  //         onPress: async () => {
-  //           // delete the interviews post from the database
-  //           await firebase
-  //             .firestore()
-  //             .collection("interviews")
-  //             .doc(id)
-  //             .delete()
-  //             .then(() => {
-  //               navigation.goBack();
-  //             });
-  //         },
-  //         style: "destructive",
-  //       },
-  //     ]
-  //   );
-  // };
+  const onDeletePress = async () => {
+    Alert.alert(
+      "Confirm Delete",
+      "Are you sure you want to delete this job posting?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Yes, Delete",
+          onPress: async () => {
+            // delete the interviews post from the database
+            await firebase
+              .firestore()
+              .collection("interviews")
+              .doc(id)
+              .delete()
+              .then(() => {
+                navigation.goBack();
+              });
+          },
+          style: "destructive",
+        },
+      ]
+    );
+  };
 
   return (
     <TouchableOpacity style={styles.card}>
@@ -47,13 +47,6 @@ export default function InterviewMyCard({ item }) {
           <Text style={styles.question} numberOfLines={1} ellipsizeMode="tail">
             {item.question}
           </Text>
-          <TouchableOpacity style={styles.Hearticon}>
-            <FontAwesome5
-              name="heart"
-              solid
-              style={[styles.icon, item.status && styles.iconFavorite]}
-            />
-          </TouchableOpacity>
         </View>
         <Text style={styles.answer} ellipsizeMode="tail">
           {item.answer}
@@ -64,7 +57,7 @@ export default function InterviewMyCard({ item }) {
               name="edit"
               solid
               style={styles.updateicon}
-              // onPress={() => editInterview(item)}
+              onPress={() => editInterview(item)}
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.Icon1}>
