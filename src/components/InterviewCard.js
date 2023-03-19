@@ -12,6 +12,7 @@ const InterviewCard = ({ item }) => {
           <TouchableOpacity style={styles.heartIcon}>
             <FontAwesome5
               name="heart"
+              solid
               style={[styles.icon, item.status && styles.iconFavorite]}
             />
           </TouchableOpacity>
