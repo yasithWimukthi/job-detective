@@ -13,7 +13,7 @@ import { Select } from "native-base";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { NativeBaseProvider } from "native-base";
 
-const JobCreate = ({ navigation }) => {
+const AddInterviewQuestion = ({ navigation }) => {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [qtype, setQtype] = useState("");
@@ -75,7 +75,6 @@ const JobCreate = ({ navigation }) => {
               <Select.Item label="Technical" value="Technical" />
             </Select>
             <TextInput
-              maxLength={20}
               style={styles.input}
               placeholder="Question"
               onChangeText={(text) => setQuestion(text)}
@@ -147,4 +146,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JobCreate;
+export default AddInterviewQuestion;
