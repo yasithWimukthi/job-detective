@@ -3,8 +3,6 @@ import {StyleSheet, View, Image, Text, TouchableOpacity} from "react-native";
 import { Button, Actionsheet, useDisclose, Box, Center, NativeBaseProvider } from "native-base";
 import {firebase} from "../../firebaseConfig";
 
-
-
 function BottomSelector() {
 
     return <Center>
