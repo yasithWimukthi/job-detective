@@ -37,6 +37,11 @@ const ApplyJob = ({ route }) => {
             })
             .then(() => {
                 console.log("Applicant added");
+                setCurrentPosition("");
+                setYearsOfExperience("");
+                setPhone("");
+                setEmail("");
+                setName("");
             })
             .catch((error) => {
                 console.log(error);
