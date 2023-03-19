@@ -15,6 +15,7 @@ import LoginScreen from "./src/screens/LoginScreen";
 import JobView from "./src/screens/JobView";
 import UserProfile from "./src/screens/UserProfile";
 import JobUpdate from "./src/screens/JobUpdate";
+import AddInterviewQuestion from "./src/screens/AddInterviewQuestion";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
@@ -108,6 +109,10 @@ export default function App() {
         <Stack.Screen name="Profile" component={UserProfile} />
         <Stack.Screen name="Edit Company" component={EditCompany} />
         <Stack.Screen name="Apply Job" component={ApplyJob} />
+        <Stack.Screen
+          name="Add new Interview"
+          component={AddInterviewQuestion}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

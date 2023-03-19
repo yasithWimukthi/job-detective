@@ -68,8 +68,8 @@ import InterviewCard from "../components/InterviewCard";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Loading from "../components/Loading";
 
-const JobPost = () => {
-  const [jobPosts, setJobPosts] = useState([
+const InterviewPreparation = () => {
+  const [interviews, setInterviews] = useState([
     {
       id: 1,
       question: "Tell me about yourself",
@@ -116,13 +116,13 @@ const JobPost = () => {
     {
       text: "My Posts",
       icon: <FontAwesome5 name="briefcase" size={24} color="white" />,
-      name: "myPosts",
+      name: "myQposts",
       position: 1,
     },
     {
-      text: "Add Post",
+      text: "Add Interview",
       icon: <FontAwesome5 name="plus" size={24} color="white" />,
-      name: "addPost",
+      name: "addInterview",
       position: 2,
     },
   ];
@@ -134,17 +134,17 @@ const JobPost = () => {
       ) : (
         <>
           <FlatList
-            data={jobPosts}
+            data={interviews}
             renderItem={InterviewCard}
             keyExtractor={(item) => item.id}
           />
           <FloatingAction
             actions={actions}
             onPressItem={(name) => {
-              if (name === "addPost") {
-                navigation.navigate("Create new Job");
-              } else if (name === "myPosts") {
-                navigation.navigate("My Job Postings");
+              if (name === "addInterview") {
+                navigation.navigate("Add new Interview");
+              } else if (name === "myQposts") {
+                navigation.navigate("My Interview Postings");
               }
             }}
           />
@@ -163,4 +163,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JobPost;
+export default InterviewPreparation;
