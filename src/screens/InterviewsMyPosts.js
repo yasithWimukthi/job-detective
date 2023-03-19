@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Text,
-} from "react-native";
+import { View, StyleSheet, FlatList, Box, Text } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
 import { firebase } from "../../firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
