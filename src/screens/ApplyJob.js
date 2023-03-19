@@ -7,6 +7,8 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     Keyboard,
+    ScrollView,
+    Image,
 } from "react-native";
 import {Input, NativeBaseProvider, Button, Stack, Center, Icon, VStack} from "native-base";
 import {firebase, storage} from "../../firebaseConfig";
@@ -118,82 +120,90 @@ const ApplyJob = ({route, navigation}) => {
 
     return (
         <NativeBaseProvider>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                <View style={styles.container}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Name"
-                        value={name}
-                        onChangeText={(value) => setName(value)}
-                        required
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Email"
-                        value={email}
-                        onChangeText={(value) => setEmail(value)}
-                        keyboardType="email-address"
-                        required
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Phone"
-                        value={phone}
-                        onChangeText={(value) => setPhone(value)}
-                        keyboardType="phone-pad"
-                        required
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Years of Experience"
-                        value={yearsOfExperience}
-                        onChangeText={(value) => setYearsOfExperience(value)}
-                        keyboardType="numeric"
-                        required
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Current Position"
-                        value={currentPosition}
-                        onValueChange={(value) => setCurrentPosition(value)}
-                        required
-                    />
-                    {/*<TouchableOpacity style={styles.button} onPress={pickDocument}>*/}
-                    {/*    <Text style={styles.buttonText}>Choose Resume</Text>*/}
-                    {/*</TouchableOpacity>*/}
 
-                    {/*<TouchableOpacity style={styles.button} onPress={handleSubmit}>*/}
-                    {/*    <Text style={styles.buttonText}>Apply</Text>*/}
-                    {/*</TouchableOpacity>*/}
-                    <VStack space={4} >
-                        <Button leftIcon={<Icon as={Ionicons} name="cloud-upload-outline" size="sm"/>} isLoading={isLoading}
-                                _loading={{
-                                    bg: "amber.400:alpha.70",
-                                    _text: {
-                                        color: "coolGray.700"
-                                    }
-                                }} _spinner={{
-                            color: "white"
-                        }} isLoadingText="Submitting"
-                                onPress={pickDocument}>
-                            Pick Resume
-                        </Button>
+            <Image source={{
+                uri: 'https://firebasestorage.googleapis.com/v0/b/job-detective-b2b72.appspot.com/o/myDocs%2FTiny%20people%20searching%20for%20business%20opportunities.jpg?alt=media&token=df08c090-4fa8-4c78-8a2d-5f004ce959fb',
+            }} style={{width: '100%', height: 200, alignSelf: 'center'}}/>
+            <ScrollView style={styles.scrollView}>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} style={{overflow: "scroll"}}>
 
-                        <Button isLoading={isSubmitting} _loading={{
-                            bg: "amber.400:alpha.70",
-                            _text: {
-                                color: "coolGray.700"
-                            }
-                        }} _spinner={{
-                            color: "white"
-                        }} isLoadingText="Submitting"
-                                onPress={handleSubmit}
-                        >
-                            Apply Now
-                        </Button>
-                    </VStack>
-                </View>
-            </TouchableWithoutFeedback>
+                    <View style={styles.container}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Name"
+                            value={name}
+                            onChangeText={(value) => setName(value)}
+                            required
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Email"
+                            value={email}
+                            onChangeText={(value) => setEmail(value)}
+                            keyboardType="email-address"
+                            required
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Phone"
+                            value={phone}
+                            onChangeText={(value) => setPhone(value)}
+                            keyboardType="phone-pad"
+                            required
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Years of Experience"
+                            value={yearsOfExperience}
+                            onChangeText={(value) => setYearsOfExperience(value)}
+                            keyboardType="numeric"
+                            required
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Current Position"
+                            value={currentPosition}
+                            onValueChange={(value) => setCurrentPosition(value)}
+                            required
+                        />
+                        {/*<TouchableOpacity style={styles.button} onPress={pickDocument}>*/}
+                        {/*    <Text style={styles.buttonText}>Choose Resume</Text>*/}
+                        {/*</TouchableOpacity>*/}
+
+                        {/*<TouchableOpacity style={styles.button} onPress={handleSubmit}>*/}
+                        {/*    <Text style={styles.buttonText}>Apply</Text>*/}
+                        {/*</TouchableOpacity>*/}
+                        <VStack space={4}>
+                            <Button leftIcon={<Icon as={Ionicons} name="cloud-upload-outline" size="sm"/>}
+                                    isLoading={isLoading}
+                                    _loading={{
+                                        bg: "amber.400:alpha.70",
+                                        _text: {
+                                            color: "coolGray.700"
+                                        }
+                                    }} _spinner={{
+                                color: "white"
+                            }} isLoadingText="Submitting"
+                                    onPress={pickDocument}>
+                                Pick Resume
+                            </Button>
+
+                            <Button isLoading={isSubmitting} _loading={{
+                                bg: "amber.400:alpha.70",
+                                _text: {
+                                    color: "coolGray.700"
+                                }
+                            }} _spinner={{
+                                color: "white"
+                            }} isLoadingText="Submitting"
+                                    onPress={handleSubmit}
+                            >
+                                Apply Now
+                            </Button>
+                        </VStack>
+                    </View>
+                </TouchableWithoutFeedback>
+            </ScrollView>
         </NativeBaseProvider>
     );
 };
@@ -276,6 +286,10 @@ const styles = StyleSheet.create({
         borderColor: "#ccc",
         borderRadius: 5,
         marginBottom: 10,
+    },
+    scrollView: {
+        backgroundColor: 'pink',
+        marginHorizontal: 20,
     },
 });
 
