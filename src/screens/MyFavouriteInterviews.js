@@ -60,7 +60,7 @@ const MyFavouriteInterviews = () => {
     },
   ];
 
-  const handleIconPress = (id) => {
+  const handleNotFavourites = (id) => {
     const updatedStatus = false;
     firebase
       .firestore()
@@ -90,19 +90,9 @@ const MyFavouriteInterviews = () => {
                     >
                       {item.question}
                     </Text>
-                    {/* <TouchableOpacity style={styles.heartIcon} >
-                      <FontAwesome5
-                        name="heart"
-                        solid
-                        style={[
-                          styles.icon,
-                          item.status && styles.iconFavorite,
-                        ]}
-                      />
-                    </TouchableOpacity> */}
                     <TouchableOpacity
                       style={styles.heartIcon}
-                      onPress={() => handleIconPress(item.id)}
+                      onPress={() => handleNotFavourites(item.id)}
                     >
                       <FontAwesome5
                         name="heart"

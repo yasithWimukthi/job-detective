@@ -115,6 +115,7 @@ export default function App() {
         <Stack.Screen name="Apply Job" component={ApplyJob} />
         <Stack.Screen name="My Favourites" component={MyFavouriteInterviews} />
         <Stack.Screen name="Edit Interview" component={InterviewEditScreen} />
+        <Stack.Screen name="Interview Main" component={InterviewPreparation} />
         <Stack.Screen
           name="My Interview Postings"
           component={MyInterviewPosts}

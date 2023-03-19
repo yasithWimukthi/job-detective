@@ -59,6 +59,17 @@ const InterviewPreparation = () => {
     },
   ];
 
+  const handleFavourits = (id) => {
+    const updatedStatus = true;
+    firebase
+      .firestore()
+      .collection("interviews")
+      .doc(id)
+      .update({ status: updatedStatus });
+    // navigate back to interviews post list page
+    navigation.navigate("Interview Main", { forceRefresh: true });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonsContainer}>
@@ -89,7 +100,37 @@ const InterviewPreparation = () => {
         <>
           <FlatList
             data={interviews}
-            renderItem={InterviewCard}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={styles.card}>
+                <View style={styles.textContainer}>
+                  <View style={styles.header}>
+                    <Text
+                      style={styles.question}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {item.question}
+                    </Text>
+                    <TouchableOpacity
+                      style={styles.heartIcon}
+                      onPress={() => handleFavourits(item.id)}
+                    >
+                      <FontAwesome5
+                        name="heart"
+                        solid={item.status}
+                        style={[
+                          styles.icon,
+                          item.status && styles.iconFavorite,
+                        ]}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <Text style={styles.answer} ellipsizeMode="tail">
+                    {item.answer}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
             keyExtractor={(item) => item.id}
           />
           <FloatingAction
@@ -144,6 +185,53 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     textAlign: "center",
+  },
+  card: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 15,
+    padding: 10,
+    marginBottom: 10,
+    elevation: 10,
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 5,
+  },
+  icon: {
+    fontSize: 20,
+    color: "#e3e3e3",
+  },
+  iconFavorite: {
+    color: "red",
+  },
+  textContainer: {
+    flex: 1,
+  },
+  question: {
+    fontSize: 18,
+    color: "#3f3f3f",
+    flex: 1,
+  },
+  answer: {
+    fontSize: 16,
+    color: "#3f3f3f",
+  },
+  heartIcon: {
+    width: 30,
+    height: 30,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
