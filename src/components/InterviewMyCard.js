@@ -9,7 +9,7 @@ const InterviewMyCard = ({ item }) => {
           <Text style={styles.question} numberOfLines={1} ellipsizeMode="tail">
             {item.question}
           </Text>
-          <TouchableOpacity style={styles.Icon}>
+          <TouchableOpacity style={styles.Hearticon}>
             <FontAwesome5
               name="heart"
               solid
@@ -20,20 +20,12 @@ const InterviewMyCard = ({ item }) => {
         <Text style={styles.answer} ellipsizeMode="tail">
           {item.answer}
         </Text>
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.Icon}>
-            <FontAwesome5
-              name="edit"
-              solid
-              style={[styles.updateicon, item.status && styles.iconFavorite]}
-            />
+        <View style={styles.footer}>
+          <TouchableOpacity style={styles.Icon1}>
+            <FontAwesome5 name="edit" solid style={styles.updateicon} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.Icon}>
-            <FontAwesome5
-              name="trash"
-              solid
-              style={[styles.deleteicon, item.status && styles.iconFavorite]}
-            />
+          <TouchableOpacity style={styles.Icon1}>
+            <FontAwesome5 name="trash" solid style={styles.deleteicon} />
           </TouchableOpacity>
         </View>
       </View>
@@ -64,6 +56,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 5,
   },
+  footer: {
+    flexDirection: "row",
+    paddingTop: 10,
+    paddingBottom: 5,
+    paddingRight: 0,
+  },
   icon: {
     fontSize: 20,
     color: "#e3e3e3",
@@ -73,9 +71,10 @@ const styles = StyleSheet.create({
   },
   updateicon: {
     fontSize: 20,
-    color: "#ccc",
+    color: "#1253bc",
   },
   deleteicon: {
+    fontSize: 20,
     color: "red",
   },
   textContainer: {
@@ -90,11 +89,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#3f3f3f",
   },
-  Icon: {
+  Hearticon: {
     width: 30,
     height: 30,
     justifyContent: "center",
     alignItems: "center",
+  },
+  Icon1: {
+    width: 30,
+    height: 30,
+    alignItems: "flex-end",
   },
 });
 
