@@ -60,6 +60,17 @@ const MyFavouriteInterviews = () => {
     },
   ];
 
+  const handleIconPress = (id) => {
+    const updatedStatus = false;
+    firebase
+      .firestore()
+      .collection("interviews")
+      .doc(id)
+      .update({ status: updatedStatus });
+    // navigate back to interviews post list page
+    navigation.navigate("My Favourites");
+  };
+
   return (
     <View style={styles.container}>
       {loading ? (
@@ -79,10 +90,23 @@ const MyFavouriteInterviews = () => {
                     >
                       {item.question}
                     </Text>
-                    <TouchableOpacity style={styles.heartIcon}>
+                    {/* <TouchableOpacity style={styles.heartIcon} >
                       <FontAwesome5
                         name="heart"
                         solid
+                        style={[
+                          styles.icon,
+                          item.status && styles.iconFavorite,
+                        ]}
+                      />
+                    </TouchableOpacity> */}
+                    <TouchableOpacity
+                      style={styles.heartIcon}
+                      onPress={() => handleIconPress(item.id)}
+                    >
+                      <FontAwesome5
+                        name="heart"
+                        solid={item.status}
                         style={[
                           styles.icon,
                           item.status && styles.iconFavorite,
