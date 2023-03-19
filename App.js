@@ -16,7 +16,6 @@ import JobView from "./src/screens/JobView";
 import UserProfile from "./src/screens/UserProfile";
 import JobUpdate from "./src/screens/JobUpdate";
 import AddInterviewQuestion from "./src/screens/AddInterviewQuestion";
-import InterviewFavourites from "./src/screens/InterviewFavourites";
 import InterviewEditScreen from "./src/screens/InterviewEditScreen";
 import MyInterviewPosts from "./src/screens/MyInterviewPosts";
 import MyFavouriteInterviews from "./src/screens/MyFavouriteInterviews";
