@@ -6,6 +6,8 @@ import { useNavigation } from "@react-navigation/native";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { FloatingAction } from "react-native-floating-action";
 import { Alert } from "react-native";
+import Toast from 'react-native-toast-message';
+
 
 const JobView = ({ route }) => {
   const [jobPost, setJobPost] = useState(null);
@@ -13,8 +15,15 @@ const JobView = ({ route }) => {
   const [UsersPost, setUsersPost] = useState(false);
 
   const navigation = useNavigation();
-
   const { id, iconName, iconColor } = route.params;
+
+  const showSuccessToast = () => {
+    Toast.show({
+      type: 'success',
+      text1: 'Congratulations!',
+      text2: 'You have successfully applied 👋'
+    });
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -87,6 +96,29 @@ const JobView = ({ route }) => {
 
   const onApplyPress = () => {
     // Handle apply button press
+    console.log(firebase.auth()?.currentUser?.uid )
+    // add applied jobs to the current user document
+    firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth()?.currentUser?.uid)
+        .update({
+            appliedJobs: firebase.firestore.FieldValue.arrayUnion(id),
+        }
+        )
+        .then(() => {
+          // display alert message
+            showSuccessToast();
+            console.log("Applied successfully");
+        })
+        .catch((error) => {
+            console.log(error);
+            Alert.alert("Error", "Failed to apply for this job");
+        })
+
+    //get user document match UID field to current user id
+
+
   };
 
   return (

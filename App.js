@@ -33,7 +33,7 @@ const CustomDrawerContent = (props) => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "start",
+            justifyContent: "center",
             margin: 20,
           }}
         >
