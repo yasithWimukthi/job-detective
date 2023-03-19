@@ -3,8 +3,7 @@ import { View, StyleSheet, FlatList } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
 import { firebase } from "../../firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
-import jobPostsDummy from "../data/jobs";
-import JobPostCard from "../components/JobCard";
+import JobCard from "../components/JobCard";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Loading from "../components/Loading";
 
@@ -54,7 +53,7 @@ const JobPost = () => {
         <>
           <FlatList
             data={jobPosts}
-            renderItem={JobPostCard}
+            renderItem={({ item }) => <JobCard item={item} />}
             keyExtractor={(item) => item.id}
           />
           <FloatingAction

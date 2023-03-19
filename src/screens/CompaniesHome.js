@@ -1,109 +1,163 @@
 import React from "react";
-import { View, Text, Button } from "native-base";
-import { Box, Select, CheckIcon, HStack } from "native-base";
-import { ScrollView, VStack, Divider } from "native-base";
-import { Wrap } from "native-base";
-import { FlatList } from "react-native";
-import { Spacer } from "native-base";
 import {
-  Image,
-  AspectRatio,
+  View,
+  Text,
+  Box,
+  Select,
+  CheckIcon,
+  HStack,
   Stack,
   Heading,
-  Center,
-  Container,
 } from "native-base";
+import { Button, FlatList, TouchableOpacity } from "react-native";
+import { FloatingAction } from "react-native-floating-action";
+import { firebase } from "../../firebaseConfig";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { useIsFocused } from "@react-navigation/native";
+import { useRef } from "react";
 
-//function returns two box components with select components inside them with responsive width
-export default function CompaniesHome({ navigation }) {
-  const [service, setService] = React.useState("ux");
+export default function CompaniesHome({ navigation, route }) {
+  const [modalVisible, setModalVisible] = React.useState(false);
+  const initialRef = React.useRef(null);
+  const finalRef = React.useRef(null);
+
   const [companies, setCompanies] = React.useState([
-    {
-      id: 1,
-      name: "name1",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, Provident similique accusantium nemo autem",
-      ratings: 4,
-      location: "colombo",
-      industry: "IT",
-    },
-    {
-      id: 2,
-      name: "name2",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, Provident similique accusantium nemo autem",
-      ratings: 4,
-    },
-    {
-      id: 3,
-      name: "name3",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, Provident similique accusantium nemo autem",
-      ratings: 4,
-    },
-    {
-      id: 4,
-      name: "name4",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, Provident similique accusantium nemo autem",
-      ratings: 4,
-    },
-    {
-      id: 5,
-      name: "name5",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, Provident similique accusantium nemo autem",
-      ratings: 4,
-    },
+    // {
+    //   id: 1,
+    //   name: "name1",
+    //   description:
+    //     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, Provident similique accusantium nemo autem",
+    //   ratings: 4,
+    //   location: "colombo",
+    //   industry: "IT",
+    // },
   ]);
+  const [selectedLocation, setSelectedLocation] = React.useState();
+  const [selectedIndustry, setSelectedIndustry] = React.useState();
+
+  const [locations, setLocations] = React.useState([]);
+  const [industries, setIndustries] = React.useState([]);
+  const isFocused = useIsFocused();
+
+  //get companies from firebase and set to companies state
+  const getCompanies = async () => {
+    try {
+      const companies = await firebase
+        .firestore()
+        .collection("companies")
+        .get();
+      const companiesArray = companies.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setCompanies(companiesArray);
+      setLocations(
+        companiesArray
+          .map((company) => company.location)
+          .filter((v, i, a) => a.indexOf(v) === i)
+      );
+      setIndustries(
+        companiesArray
+          .map((company) => company.industry)
+          .filter((v, i, a) => a.indexOf(v) === i)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //create useEffect to get companies from firebase
+  React.useEffect(() => {
+    if (isFocused) {
+      // Reload your data here
+      getCompanies();
+    }
+  }, [isFocused]);
 
   let counter = 0;
+
+  //function to filter companies based on location and industry
+  const filterCompanies = () => {
+    if (selectedLocation && selectedIndustry) {
+      return companies.filter(
+        (company) =>
+          company.location === selectedLocation &&
+          company.industry === selectedIndustry
+      );
+    } else if (selectedLocation) {
+      return companies.filter(
+        (company) => company.location === selectedLocation
+      );
+    } else if (selectedIndustry) {
+      return companies.filter(
+        (company) => company.industry === selectedIndustry
+      );
+    } else {
+      return companies;
+    }
+  };
+
+  // //function to delete a company
+  // const deleteCompany = async (id) => {
+  //   try {
+  //     await firebase.firestore().collection("companies").doc(id).delete();
+  //     getCompanies();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  //function to navigate to edit company page with company details
+  const editCompany = (company) => {
+    navigation.navigate("Edit Company", { company });
+  };
 
   return (
     <View style={{ padding: 10, height: "100%" }}>
       <HStack>
         <Box width="50%" marginRight={1}>
           <Select
-            selectedValue={service}
+            height="45"
+            selectedValue={selectedLocation}
             color="primary.50"
-            backgroundColor="primary.700"
-            accessibilityLabel="Select Service"
-            placeholder="Select Service"
-            onValueChange={(itemValue) => setService(itemValue)}
+            backgroundColor="primary.900"
+            accessibilityLabel="Select a Location"
+            placeholder="Select a Location"
+            onValueChange={(itemValue) => setSelectedLocation(itemValue)}
             _selectedItem={{
               bg: "teal.600",
               endIcon: <CheckIcon size={4} />,
             }}
             borderRadius={8}
           >
-            <Select.Item label="UX Design" value="ux" />
-            <Select.Item label="Web Development" value="web" />
-            <Select.Item label="Mobile Development" value="mobile" />
-            <Select.Item label="Data Science" value="data" />
+            <Select.Item label="None" value="" />
+            {locations.map((location) => (
+              <Select.Item key={location} label={location} value={location} />
+            ))}
           </Select>
         </Box>
         <Box width="50%" marginLeft={1}>
           <Select
-            selectedValue={service}
+            height="45"
+            selectedValue={selectedIndustry}
             color="primary.50"
-            backgroundColor="primary.700"
-            accessibilityLabel="Select Service"
-            placeholder="Select Service"
-            onValueChange={(itemValue) => setService(itemValue)}
+            backgroundColor="primary.900"
+            accessibilityLabel="Select an Industry"
+            placeholder="Select an Industry"
+            onValueChange={(itemValue) => setSelectedIndustry(itemValue)}
             _selectedItem={{
               bg: "teal.600",
               endIcon: <CheckIcon size={4} />,
             }}
             borderRadius={8}
           >
-            <Select.Item label="UX Design" value="ux" />
-            <Select.Item label="Web Development" value="web" />
-            <Select.Item label="Mobile Development" value="mobile" />
-            <Select.Item label="Data Science" value="data" />
+            <Select.Item label="None" value="" />
+            {industries.map((industry) => (
+              <Select.Item key={industry} label={industry} value={industry} />
+            ))}
           </Select>
         </Box>
       </HStack>
-
       <Box
         w={{
           base: "100%",
@@ -112,7 +166,7 @@ export default function CompaniesHome({ navigation }) {
         mt={7}
       >
         <FlatList
-          data={companies}
+          data={filterCompanies()}
           renderItem={({ item }) => (
             <Box alignItems="center" width="50%" mb={4} pr={3} ml={1}>
               <Box
@@ -133,7 +187,15 @@ export default function CompaniesHome({ navigation }) {
                   backgroundColor: "gray.50",
                 }}
               >
-                <Box p="2" bg="primary.500" h={10} shadow={4}></Box>
+                <Box p="2" bg="primary.600" h={10} shadow={4}>
+                  <FontAwesome5
+                    style={{ position: "absolute", right: 10, top: 10 }}
+                    name="edit"
+                    size={20}
+                    color="#bfbfbf"
+                    onPress={() => editCompany(item)}
+                  ></FontAwesome5>
+                </Box>
                 <Stack p="4" space={3}>
                   <Stack space={2}>
                     <Heading size="md" ml="-1">
@@ -180,6 +242,12 @@ export default function CompaniesHome({ navigation }) {
           keyExtractor={(item) => item.id}
         />
       </Box>
+      <FloatingAction
+        onPressMain={() => {
+          navigation.navigate("Add New Company");
+        }}
+        color="#155e75"
+      />
     </View>
   );
 }

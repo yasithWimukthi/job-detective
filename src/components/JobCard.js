@@ -1,18 +1,39 @@
+import React, { useState, useEffect } from "react";
 import iconMapping from "../data/iconMapping";
 import getRandomColor from "../utils/RandomColor";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
-const JobPostCard = ({ item }) => {
+const JobCard = ({ item, disableCard, iconBG }) => {
+  const navigation = useNavigation();
+
+  const [iconColor, seticonColor] = useState("");
+
   // Map job titles to corresponding FontAwesome icons
-
   const iconName = iconMapping[item.title] || "briefcase";
 
-  // Generate a random background color for the icon
-  const iconColor = getRandomColor();
+  useEffect(() => {
+    if (iconBG) {
+      seticonColor(iconBG);
+    } else {
+      // Generate a random background color for the icon
+      seticonColor(getRandomColor());
+    }
+  }, []);
 
   return (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() =>
+        navigation.navigate("Job View", {
+          id: item.id,
+          iconName: iconName,
+          iconColor: iconColor,
+        })
+      }
+      disabled={disableCard}
+    >
       <View
         style={{
           paddingVertical: 35,
@@ -103,4 +124,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JobPostCard;
+export default JobCard;

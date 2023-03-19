@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 import JobCard from "../components/JobCard";
 import { firebase } from "../../firebaseConfig";
@@ -20,6 +21,7 @@ const JobCreate = ({ navigation }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [salary, setSalary] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (title) setDescription(generateRandomJobDescription(title));
@@ -50,8 +52,11 @@ const JobCreate = ({ navigation }) => {
       };
 
       try {
+        setSubmitting(true);
         // save the job post object to the firestore database
         await firebase.firestore().collection("jobPosts").add(jobPost);
+
+        setSubmitting(false);
 
         // navigate back to job post list page
         navigation.goBack();
@@ -80,6 +85,7 @@ const JobCreate = ({ navigation }) => {
                 salary: salary ? salary : "150000",
                 date: new Date().toLocaleString().split(",")[0],
               }}
+              disableCard={true}
             />
           </View>
           <Select
@@ -116,8 +122,16 @@ const JobCreate = ({ navigation }) => {
             keyboardType="numeric"
             required
           />
-          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>Submit</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleSubmit}
+            disabled={submitting}
+          >
+            {submitting ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.buttonText}>Submit</Text>
+            )}
           </TouchableOpacity>
         </View>
       </TouchableWithoutFeedback>
