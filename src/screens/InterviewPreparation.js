@@ -59,17 +59,7 @@ const InterviewPreparation = () => {
     },
   ];
 
-  // const handleFavourits = (id) => {
-  //   const updatedStatus = true;
-  //   firebase
-  //     .firestore()
-  //     .collection("interviews")
-  //     .doc(id)
-  //     .update({ status: updatedStatus });
-  //   // navigate back to interviews post list page
-  //   navigation.navigate("Interview Main", { forceRefresh: true });
-  // };
-
+  //like or unlike
   const handleFavourites = (id, status) => {
     const updatedStatus = !status;
     firebase
