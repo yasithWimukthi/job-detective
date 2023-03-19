@@ -1,7 +1,16 @@
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-const InterviewMyCard = ({ item }) => {
+export default function InterviewMyCard({ item }) {
+  const navigation = useNavigation();
+
+  //function to navigate to edit interview page with interview details
+  const editInterview = (item) => {
+    navigation.navigate("Edit Interview", { item });
+  };
+
   return (
     <TouchableOpacity style={styles.card}>
       <View style={styles.textContainer}>
@@ -22,7 +31,12 @@ const InterviewMyCard = ({ item }) => {
         </Text>
         <View style={styles.footer}>
           <TouchableOpacity style={styles.Icon1}>
-            <FontAwesome5 name="edit" solid style={styles.updateicon} />
+            <FontAwesome5
+              name="edit"
+              solid
+              style={styles.updateicon}
+              onPress={() => editInterview(item)}
+            />
           </TouchableOpacity>
           <TouchableOpacity style={styles.Icon1}>
             <FontAwesome5 name="trash" solid style={styles.deleteicon} />
@@ -31,7 +45,7 @@ const InterviewMyCard = ({ item }) => {
       </View>
     </TouchableOpacity>
   );
-};
+}
 
 const styles = StyleSheet.create({
   card: {
@@ -60,7 +74,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingTop: 10,
     paddingBottom: 5,
-    paddingRight: 0,
+    paddingLeft: 90,
   },
   icon: {
     fontSize: 20,
@@ -102,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InterviewMyCard;
+// export default InterviewMyCard;
