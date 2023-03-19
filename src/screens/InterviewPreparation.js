@@ -1,116 +1,34 @@
-// import React, { useState } from "react";
-// import { View, FlatList } from "react-native";
-// import { ListItem, Icon } from "react-native-elements";
-
-// const InterviewPreparation = () => {
-//   const [data, setData] = useState([
-//     {
-//       id: 1,
-//       question: "Tell me about yourself",
-//       answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-//       isFavorite: false,
-//     },
-//     {
-//       id: 2,
-//       question: "What are your strengths?",
-//       answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-//       isFavorite: false,
-//     },
-//     {
-//       id: 3,
-//       question: "What are your weaknesses?",
-//       answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-//       isFavorite: false,
-//     },
-//   ]);
-
-//   const toggleFavorite = (id) => {
-//     setData((prevData) =>
-//       prevData.map((item) =>
-//         item.id === id ? { ...item, isFavorite: !item.isFavorite } : item
-//       )
-//     );
-//   };
-
-//   const renderItem = ({ item }) => (
-//     <ListItem
-//       key={item.id}
-//       title={item.question}
-//       subtitle={item.answer}
-//       rightIcon={
-//         <Icon
-//           name={item.isFavorite ? "heart" : "heart-outline"}
-//           type="ionicon"
-//           onPress={() => toggleFavorite(item.id)}
-//         />
-//       }
-//     />
-//   );
-
-//   return (
-//     <View style={{ flex: 1 }}>
-//       <FlatList
-//         data={data}
-//         renderItem={renderItem}
-//         keyExtractor={(item) => item.id.toString()}
-//       />
-//     </View>
-//   );
-// };
-
-// export default InterviewPreparation;
-
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, Text } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
+import { firebase } from "../../firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import InterviewCard from "../components/InterviewCard";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Loading from "../components/Loading";
 
 const InterviewPreparation = () => {
-  const [interviews, setInterviews] = useState([
-    {
-      id: 1,
-      question: "Tell me about yourself",
-      answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      isFavorite: true,
-    },
-    {
-      id: 2,
-      question: "What are your strengths?",
-      answer:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lor sectetur adipiscing elitLorem ipsum dolor sit amet, cons ectetur adipiscing elit",
-      isFavorite: false,
-    },
-    {
-      id: 3,
-      question: "What are your weaknesses?",
-      answer:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit qw e r  tttt koiwi ijcwhiuhnc uhwchb wvoinnol",
-      isFavorite: false,
-    },
-  ]);
-  const [loading, setLoading] = useState(false);
+  const [interviews, setInterviews] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
-  //   useEffect(() => {
-  //     setLoading(true);
-  //     // Fetch job posts from Firebase Firestore
-  //     const unsubscribe = firebase
-  //       .firestore()
-  //       .collection("jobPosts")
-  //       .onSnapshot((querySnapshot) => {
-  //         const posts = [];
-  //         querySnapshot.forEach((doc) => {
-  //           posts.push({ ...doc.data(), id: doc.id });
-  //         });
-  //         setJobPosts(posts);
-  //         setLoading(false);
-  //       });
+  useEffect(() => {
+    setLoading(true);
+    // Fetch interviews question from Firebase Firestore
+    const unsubscribe = firebase
+      .firestore()
+      .collection("interviews")
+      .onSnapshot((querySnapshot) => {
+        const posts = [];
+        querySnapshot.forEach((doc) => {
+          posts.push({ ...doc.data(), id: doc.id });
+        });
+        setInterviews(posts);
+        setLoading(false);
+      });
 
-  //     return () => unsubscribe();
-  //   }, []);
+    return () => unsubscribe();
+  }, []);
 
   const actions = [
     {
@@ -157,9 +75,9 @@ const InterviewPreparation = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#f9f9f9",
     paddingHorizontal: 5,
-    paddingTop: 10,
+    padding: 10,
   },
 });
 

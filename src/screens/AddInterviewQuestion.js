@@ -20,7 +20,7 @@ const AddInterviewQuestion = ({ navigation }) => {
   const [status, setStatus] = useState(false);
 
   const handleSubmit = async () => {
-    if (question && answer && qtype && status) {
+    if (question && answer && qtype) {
       // submit interview post to database
 
       // create a new interview post object
@@ -34,11 +34,8 @@ const AddInterviewQuestion = ({ navigation }) => {
       };
 
       try {
-        setSubmitting(true);
         // save the interview post object to the firestore database
         await firebase.firestore().collection("interviews").add(interviews);
-
-        setSubmitting(false);
 
         // navigate back to interviews post list page
         navigation.goBack();
