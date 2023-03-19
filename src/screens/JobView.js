@@ -1,5 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
 import { firebase } from "../../firebaseConfig";
 import Loading from "../components/Loading";
 import { useNavigation } from "@react-navigation/native";
@@ -14,9 +20,29 @@ const JobView = ({ route }) => {
 
   const navigation = useNavigation();
 
+  const bounceValue = useRef(new Animated.Value(1)).current;
+
   const { id, iconName, iconColor } = route.params;
 
+  const startBouncing = () => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(bounceValue, {
+          toValue: 1.2,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(bounceValue, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  };
+
   useEffect(() => {
+    startBouncing();
     setLoading(true);
     const unsubscribe = firebase
       .firestore()
@@ -105,12 +131,18 @@ const JobView = ({ route }) => {
               marginBottom: 20,
             }}
           >
-            <FontAwesome5
-              style={styles.icon}
-              name={iconName}
-              size={20}
-              color="#666666"
-            />
+            <Animated.View
+              style={{
+                transform: [{ scale: bounceValue }],
+              }}
+            >
+              <FontAwesome5
+                style={styles.icon}
+                name={iconName}
+                size={20}
+                color="#666666"
+              />
+            </Animated.View>
           </View>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{jobPost.title}</Text>
@@ -135,6 +167,7 @@ const JobView = ({ route }) => {
                 if (name === "update") {
                   navigation.navigate("Update Job Posting", {
                     id: jobPost.id,
+                    iconColor: iconColor,
                   });
                 } else if (name === "delete") {
                   onDeletePress();
