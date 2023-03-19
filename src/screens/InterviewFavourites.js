@@ -28,7 +28,10 @@ const InterviewFavourites = () => {
       .onSnapshot((querySnapshot) => {
         const posts = [];
         querySnapshot.forEach((doc) => {
-          posts.push({ ...doc.data(), id: doc.id });
+          //TODO: change userID to the current user's ID
+          if (doc.data().userID === "001") {
+            posts.push({ ...doc.data(), id: doc.id });
+          }
         });
         setInterviews(posts);
         setLoading(false);
