@@ -34,8 +34,8 @@ const SignupScreen = () => {
                 uid: user.uid,
             }
             try {
-                // save the job post object to the firestore database
-                await firebase.firestore().collection("users").add(registeredUser);
+                // save the job post object to the firestore database by uid
+                await firebase.firestore().collection("users").doc(user.uid).set(registeredUser);
 
                 // navigate to user profile page
                 navigation.navigate("Profile");
