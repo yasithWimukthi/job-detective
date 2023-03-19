@@ -17,6 +17,7 @@ import UserProfile from "./src/screens/UserProfile";
 import JobUpdate from "./src/screens/JobUpdate";
 import AddInterviewQuestion from "./src/screens/AddInterviewQuestion";
 import InterviewFavourites from "./src/screens/InterviewFavourites";
+import InterviewsMyPosts from "./src/screens/InterviewsMyPosts";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
@@ -110,11 +111,15 @@ export default function App() {
         <Stack.Screen name="Profile" component={UserProfile} />
         <Stack.Screen name="Edit Company" component={EditCompany} />
         <Stack.Screen name="Apply Job" component={ApplyJob} />
+        <Stack.Screen name="My Favourites" component={InterviewFavourites} />
+        <Stack.Screen
+          name="My Interview Postings"
+          component={InterviewsMyPosts}
+        />
         <Stack.Screen
           name="Add new Interview"
           component={AddInterviewQuestion}
         />
-        <Stack.Screen name="My Favourites" component={InterviewFavourites} />
       </Stack.Navigator>
     </NavigationContainer>
   );
