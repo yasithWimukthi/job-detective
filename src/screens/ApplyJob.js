@@ -8,13 +8,13 @@ import {
     TouchableWithoutFeedback,
     Keyboard,
 } from "react-native";
-import {Input, NativeBaseProvider} from "native-base";
+import {Input, NativeBaseProvider, Button, Stack, Center, Icon} from "native-base";
 import {firebase, storage} from "../../firebaseConfig";
 import * as DocumentPicker from "expo-document-picker";
 import {ref, getDownloadURL, uploadBytesResumable} from "firebase/storage";
+import { Ionicons } from "@expo/vector-icons";
 
-
-const ApplyJob = ({route}) => {
+const ApplyJob = ({route,navigation}) => {
     // get current user details
     const [name, setName] = useState();
     const [email, setEmail] = useState("");
@@ -24,6 +24,8 @@ const ApplyJob = ({route}) => {
     const [fileName, setFileName] = useState("");
     const [blobFile, setBlobFile] = useState(null);
     const [resumeUrl, setResumeUrl] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const {id} = route.params;
 
@@ -45,6 +47,7 @@ const ApplyJob = ({route}) => {
 
 
     const pickDocument = async () => {
+        setIsLoading(true)
         let result = await DocumentPicker.getDocumentAsync({})
         if (result != null) {
             const r = await fetch(result.uri);
@@ -52,6 +55,7 @@ const ApplyJob = ({route}) => {
             setFileName(result.name)
             setBlobFile(b)
         }
+        setIsLoading(false)
     }
 
 
@@ -60,6 +64,7 @@ const ApplyJob = ({route}) => {
     }
 
     const UploadFile = (blobFile, fileName, isUploadCompleted) => {
+        setIsSubmitting(true)
         if (!blobFile) return;
         const sotrageRef = ref(storage, `myDocs/${fileName}`); //LINE A
         const uploadTask = uploadBytesResumable(sotrageRef, blobFile); //LINE B
@@ -75,6 +80,7 @@ const ApplyJob = ({route}) => {
                 });
             }
         );
+
     }
 
     const handleSubmit = async () => {
@@ -102,6 +108,8 @@ const ApplyJob = ({route}) => {
                 setPhone("");
                 setEmail("");
                 setName("");
+                setIsSubmitting(false)
+                navigation.goBack();
             })
             .catch((error) => {
                 console.log(error);
@@ -150,12 +158,35 @@ const ApplyJob = ({route}) => {
                         onValueChange={(value) => setCurrentPosition(value)}
                         required
                     />
-                    <TouchableOpacity style={styles.button} onPress={pickDocument}>
-                        <Text style={styles.buttonText}>Choose Resume</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                        <Text style={styles.buttonText}>Apply</Text>
-                    </TouchableOpacity>
+                    {/*<TouchableOpacity style={styles.button} onPress={pickDocument}>*/}
+                    {/*    <Text style={styles.buttonText}>Choose Resume</Text>*/}
+                    {/*</TouchableOpacity>*/}
+                    <Button leftIcon={<Icon as={Ionicons} name="cloud-upload-outline" size="sm" />} isLoading={isLoading} _loading={{
+                        bg: "amber.400:alpha.70",
+                        _text: {
+                            color: "coolGray.700"
+                        }
+                    }} _spinner={{
+                        color: "white"
+                    }} isLoadingText="Submitting"
+                    onPress={pickDocument}>
+                        Pick Resume
+                    </Button>
+                    {/*<TouchableOpacity style={styles.button} onPress={handleSubmit}>*/}
+                    {/*    <Text style={styles.buttonText}>Apply</Text>*/}
+                    {/*</TouchableOpacity>*/}
+                    <Button  isLoading={isSubmitting} _loading={{
+                        bg: "amber.400:alpha.70",
+                        _text: {
+                            color: "coolGray.700"
+                        }
+                    }} _spinner={{
+                        color: "white"
+                    }} isLoadingText="Submitting"
+                            onPress={handleSubmit}
+                    >
+                        Apply Now
+                    </Button>
                 </View>
             </TouchableWithoutFeedback>
         </NativeBaseProvider>
