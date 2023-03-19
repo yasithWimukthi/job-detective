@@ -65,7 +65,7 @@ const MyInterviewPosts = () => {
     navigation.navigate("Edit Interview", { item });
   };
 
-  const onDeletePress = async () => {
+  const onDeletePress = async (id) => {
     Alert.alert(
       "Confirm Delete",
       "Are you sure you want to delete this interview question and answer?",
@@ -84,10 +84,10 @@ const MyInterviewPosts = () => {
               .doc(id)
               .delete()
               .then(() => {
-                navigation.goBack();
+                navigation.navigate("My Interview Postings");
               });
           },
-          style: "destructive",
+          //   style: "destructive",
         },
       ]
     );
@@ -125,12 +125,22 @@ const MyInterviewPosts = () => {
                         onPress={() => editInterview(item)}
                       />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.Icon1}>
+                    {/* <TouchableOpacity style={styles.Icon1}>
                       <FontAwesome5
                         name="trash"
                         solid
                         style={styles.deleteicon}
                         onPress={onDeletePress}
+                      />
+                    </TouchableOpacity> */}
+                    <TouchableOpacity
+                      style={styles.Icon1}
+                      onPress={() => onDeletePress(item.id)}
+                    >
+                      <FontAwesome5
+                        name="trash"
+                        solid
+                        style={styles.deleteicon}
                       />
                     </TouchableOpacity>
                   </View>
