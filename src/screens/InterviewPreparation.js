@@ -46,10 +46,16 @@ const InterviewPreparation = () => {
       position: 1,
     },
     {
+      text: "My Favourites",
+      icon: <FontAwesome5 name="heart" solid size={24} color="white" />,
+      name: "myFavourites",
+      position: 2,
+    },
+    {
       text: "Add Interview",
       icon: <FontAwesome5 name="plus" size={24} color="white" />,
       name: "addInterview",
-      position: 2,
+      position: 3,
     },
   ];
 
