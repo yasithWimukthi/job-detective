@@ -9,7 +9,7 @@ import {
 import { FloatingAction } from "react-native-floating-action";
 import { firebase } from "../../firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
-import InterviewCard from "../components/InterviewCard";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Loading from "../components/Loading";
 
@@ -59,8 +59,19 @@ const InterviewPreparation = () => {
     },
   ];
 
-  const handleFavourits = (id) => {
-    const updatedStatus = true;
+  // const handleFavourits = (id) => {
+  //   const updatedStatus = true;
+  //   firebase
+  //     .firestore()
+  //     .collection("interviews")
+  //     .doc(id)
+  //     .update({ status: updatedStatus });
+  //   // navigate back to interviews post list page
+  //   navigation.navigate("Interview Main", { forceRefresh: true });
+  // };
+
+  const handleFavourites = (id, status) => {
+    const updatedStatus = !status;
     firebase
       .firestore()
       .collection("interviews")
@@ -111,7 +122,7 @@ const InterviewPreparation = () => {
                     >
                       {item.question}
                     </Text>
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                       style={styles.heartIcon}
                       onPress={() => handleFavourits(item.id)}
                     >
@@ -123,6 +134,25 @@ const InterviewPreparation = () => {
                           item.status && styles.iconFavorite,
                         ]}
                       />
+                    </TouchableOpacity> */}
+                    <TouchableOpacity
+                      onPress={() => handleFavourites(item.id, item.status)}
+                    >
+                      {item.status ? (
+                        <MaterialCommunityIcons
+                          name="heart"
+                          solid={item.status}
+                          size={25}
+                          color="red"
+                        />
+                      ) : (
+                        <MaterialCommunityIcons
+                          name="heart"
+                          solid={item.status}
+                          size={25}
+                          color="grey"
+                        />
+                      )}
                     </TouchableOpacity>
                   </View>
                   <Text style={styles.answer} ellipsizeMode="tail">
