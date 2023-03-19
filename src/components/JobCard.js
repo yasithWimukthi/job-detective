@@ -5,15 +5,22 @@ import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-const JobCard = ({ item, disableCard }) => {
+const JobCard = ({ item, disableCard, iconBG }) => {
   const navigation = useNavigation();
 
-  // Map job titles to corresponding FontAwesome icons
+  const [iconColor, seticonColor] = useState("");
 
+  // Map job titles to corresponding FontAwesome icons
   const iconName = iconMapping[item.title] || "briefcase";
 
-  // Generate a random background color for the icon
-  const iconColor = getRandomColor();
+  useEffect(() => {
+    if (iconBG) {
+      seticonColor(iconBG);
+    } else {
+      // Generate a random background color for the icon
+      seticonColor(getRandomColor());
+    }
+  }, []);
 
   return (
     <TouchableOpacity

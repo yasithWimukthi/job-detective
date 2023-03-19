@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
 import { firebase } from "../../firebaseConfig";
 import Loading from "../components/Loading";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { FloatingAction } from "react-native-floating-action";
 import { Alert } from "react-native";
-import Toast from 'react-native-toast-message';
-
+import Toast from "react-native-toast-message";
 
 
 const JobView = ({ route }) => {
@@ -16,17 +21,38 @@ const JobView = ({ route }) => {
   const [UsersPost, setUsersPost] = useState(false);
 
   const navigation = useNavigation();
-  const { id, iconName, iconColor } = route.params;
 
   const showSuccessToast = () => {
     Toast.show({
-      type: 'success',
-      text1: 'Congratulations!',
-      text2: 'You have successfully applied 👋'
+      type: "success",
+      text1: "Congratulations!",
+      text2: "You have successfully applied 👋",
     });
-  }
+  };
+
+  const bounceValue = useRef(new Animated.Value(1)).current;
+
+  const { id, iconName, iconColor } = route.params;
+
+  const startBouncing = () => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(bounceValue, {
+          toValue: 1.2,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(bounceValue, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  };
 
   useEffect(() => {
+    startBouncing();
     setLoading(true);
     const unsubscribe = firebase
       .firestore()
@@ -97,7 +123,7 @@ const JobView = ({ route }) => {
 
   const onApplyPress = () => {
     // Handle apply button press
-    console.log(firebase.auth()?.currentUser?.uid )
+    console.log(firebase.auth()?.currentUser?.uid);
     // add applied jobs to the current user document
     firebase
         .firestore()
@@ -121,8 +147,6 @@ const JobView = ({ route }) => {
         })
 
     //get user document match UID field to current user id
-
-
   };
 
   return (
@@ -141,12 +165,18 @@ const JobView = ({ route }) => {
               marginBottom: 20,
             }}
           >
-            <FontAwesome5
-              style={styles.icon}
-              name={iconName}
-              size={20}
-              color="#666666"
-            />
+            <Animated.View
+              style={{
+                transform: [{ scale: bounceValue }],
+              }}
+            >
+              <FontAwesome5
+                style={styles.icon}
+                name={iconName}
+                size={20}
+                color="#666666"
+              />
+            </Animated.View>
           </View>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{jobPost.title}</Text>
@@ -171,6 +201,7 @@ const JobView = ({ route }) => {
                 if (name === "update") {
                   navigation.navigate("Update Job Posting", {
                     id: jobPost.id,
+                    iconColor: iconColor,
                   });
                 } else if (name === "delete") {
                   onDeletePress();

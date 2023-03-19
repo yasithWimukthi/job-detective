@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 import JobCard from "../components/JobCard";
 import { firebase } from "../../firebaseConfig";
@@ -22,8 +23,9 @@ const JobUpdate = ({ navigation, route }) => {
   const [salary, setSalary] = useState("");
   const [date, setdate] = useState("");
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
-  const { id } = route.params;
+  const { id, iconColor } = route.params;
 
   useEffect(() => {
     setLoading(true);
@@ -67,12 +69,15 @@ const JobUpdate = ({ navigation, route }) => {
       };
 
       try {
+        setSubmitting(true);
         // update the job post object in the firestore database
         await firebase
           .firestore()
           .collection("jobPosts")
           .doc(id)
           .update(updatedJobPost);
+
+        setSubmitting(false);
 
         // navigate back to job post list page
         navigation.goBack();
@@ -106,6 +111,7 @@ const JobUpdate = ({ navigation, route }) => {
                     date: new Date().toLocaleString().split(",")[0],
                   }}
                   disableCard={true}
+                  iconBG={iconColor}
                 />
               </View>
               <Select
@@ -146,8 +152,16 @@ const JobUpdate = ({ navigation, route }) => {
                 keyboardType="numeric"
                 required
               />
-              <TouchableOpacity style={styles.button} onPress={handleUpdate}>
-                <Text style={styles.buttonText}>Submit</Text>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleUpdate}
+                disabled={submitting}
+              >
+                {submitting ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <Text style={styles.buttonText}>Submit</Text>
+                )}
               </TouchableOpacity>
             </>
           )}
