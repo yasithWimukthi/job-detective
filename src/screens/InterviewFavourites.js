@@ -74,6 +74,8 @@ const InterviewFavourites = () => {
             onPressItem={(name) => {
               if (name === "addInterview") {
                 navigation.navigate("Add new Interview");
+              } else if (name === "myFavourites") {
+                navigation.navigate("My Favourites");
               } else if (name === "myQposts") {
                 navigation.navigate("My Interview Postings");
               }
