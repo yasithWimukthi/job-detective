@@ -4,7 +4,7 @@ import { Button, Actionsheet, useDisclose, Box, Center, NativeBaseProvider } fro
 import {firebase, storage} from "../../firebaseConfig";
 import * as DocumentPicker from "expo-document-picker";
 import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
-
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 function BottomSelector() {
 
     return <Center>
@@ -92,6 +92,24 @@ function UserProfile(props) {
         }
     }
 
+    const selectFile = async () => {
+        const result = await launchCamera(
+            (response) => {
+            console.log(response);
+            if (response.didCancel) {
+                console.log("User cancelled image picker");
+            } else if (response.errorCode) {
+                console.log("ImagePicker Error: ", response.errorCode);
+            } else if (response.customButton) {
+                console.log("User tapped custom button: ", response.customButton);
+            } else {
+                // const source = { uri: response.uri };
+                // setFileName(response.fileName);
+                // setBlobFile(response);
+            }
+        });
+    };
+
     const isUploadCompleted = (isCompleted) => {
         console.log("isCompleted", isCompleted)
     }
@@ -169,11 +187,11 @@ function UserProfile(props) {
                                         Choose a method
                                     </Text>
                                 </Box>
-                                <Actionsheet.Item>Open Camera</Actionsheet.Item>
+                                <Actionsheet.Item onPress={selectFile}>Open Camera</Actionsheet.Item>
                                 <Actionsheet.Item onPress={pickDocument}>Select from gallery</Actionsheet.Item>
                             </Actionsheet.Content>
                         </Actionsheet>
-                    </Center>;
+                    </Center>
                 </Center>
             </NativeBaseProvider>
         </View>
