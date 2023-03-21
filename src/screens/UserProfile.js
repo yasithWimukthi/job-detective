@@ -1,7 +1,9 @@
 import React, {Component, useEffect, useState} from "react";
 import {StyleSheet, View, Image, Text, TouchableOpacity} from "react-native";
 import { Button, Actionsheet, useDisclose, Box, Center, NativeBaseProvider } from "native-base";
-import {firebase} from "../../firebaseConfig";
+import {firebase, storage} from "../../firebaseConfig";
+import * as DocumentPicker from "expo-document-picker";
+import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
 
 function BottomSelector() {
 
@@ -35,12 +37,30 @@ function UserProfile(props) {
 
     // get applied jobs details of current user
     const [appliedJobs, setAppliedJobs] = useState([]);
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState({
+        name: "",
+        email: "",
+        phone: "",
+    });
 
-    // useEffect(() => {
-    //     getAppliedJobsOfUser(firebase.auth()?.currentUser?.uid);
-    //     getCurrentUser();
-    // })
+    const [fileName, setFileName] = useState("");
+    const [blobFile, setBlobFile] = useState(null);
+    const [resumeUrl, setResumeUrl] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        // get current user document
+        const userDoc = firebase.firestore().collection("users").doc(firebase.auth()?.currentUser?.uid).get()
+            .then((doc) => {
+                if (doc.exists) {
+                    setUser({ ...doc.data(), id: doc.id });
+                    console.log(doc.data())
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [firebase.auth()?.currentUser?.uid]);
 
     const getCurrentUser = async () => {
         try {
@@ -72,6 +92,53 @@ function UserProfile(props) {
         }
     }
 
+    const isUploadCompleted = (isCompleted) => {
+        console.log("isCompleted", isCompleted)
+    }
+
+    const UploadFile = (blobFile, fileName, isUploadCompleted) => {
+        if (!blobFile) return;
+        const sotrageRef = ref(storage, `profileImages/${fileName}`); //LINE A
+        const uploadTask = uploadBytesResumable(sotrageRef, blobFile); //LINE B
+        uploadTask.on(
+            "state_changed", null,
+            (error) => console.log(error),
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => { //LINE C
+                    console.log("File available at", downloadURL);
+                    isUploadCompleted(true)
+                    setResumeUrl(downloadURL)
+                    //update current user document with profile image url
+                    firebase.firestore().collection("users").doc(firebase.auth()?.currentUser?.uid).update({
+                        profileImage: downloadURL
+                    }).then(() => {
+                        console.log("Profile image updated successfully")
+                    }).catch((error) => {
+                        console.log(error)
+                    });
+                    return downloadURL
+                });
+            }
+        );
+
+    }
+
+    const pickDocument = async () => {
+        let result = await DocumentPicker.getDocumentAsync({})
+        if (result != null) {
+            const r = await fetch(result.uri);
+            const b = await r.blob();
+            setFileName(result.name)
+            setBlobFile(b)
+        }
+        setIsLoading(false)
+
+        await UploadFile(blobFile, fileName, isUploadCompleted);
+    }
+
+
+
+
     return (
         <View style={styles.container}>
             <TouchableOpacity activeOpacity = { .5 } onPress={onOpen }>
@@ -83,9 +150,9 @@ function UserProfile(props) {
                 style={styles.image}
             ></Image>
             </TouchableOpacity>
-            <Text style={styles.name}>kjb</Text>
+            <Text style={styles.name}>{user.name}</Text>
             <Text style={styles.description}>
-                description description description description description description
+                {user.description || "Associate Full Stack Engineer | Software Engineering Undergraduate at SLIIT | Developer | Blogger | Tech Enthusiast"}
             </Text>
 
 
@@ -102,7 +169,7 @@ function UserProfile(props) {
                                     </Text>
                                 </Box>
                                 <Actionsheet.Item>Open Camera</Actionsheet.Item>
-                                <Actionsheet.Item >Select from gallery</Actionsheet.Item>
+                                <Actionsheet.Item onPress={pickDocument}>Select from gallery</Actionsheet.Item>
                             </Actionsheet.Content>
                         </Actionsheet>
                     </Center>;

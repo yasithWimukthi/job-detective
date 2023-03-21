@@ -3,6 +3,7 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { getAuth } from "firebase/auth";
 import {getStorage} from 'firebase/storage'
+import {initializeFirestore} from 'firebase/firestore';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -29,4 +30,8 @@ const firebaseConfig = {
  const storage = getStorage(app)
 // }
 
-export {auth ,firebase,storage };
+const db = initializeFirestore(app, {
+  experimentalForceLongPolling: true,
+});
+
+export {auth ,firebase,storage, db };
