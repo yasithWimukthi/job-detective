@@ -35,12 +35,25 @@ function UserProfile(props) {
 
     // get applied jobs details of current user
     const [appliedJobs, setAppliedJobs] = useState([]);
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState({
+        name: "",
+        email: "",
+        phone: "",
+    });
 
-    // useEffect(() => {
-    //     getAppliedJobsOfUser(firebase.auth()?.currentUser?.uid);
-    //     getCurrentUser();
-    // })
+    useEffect(() => {
+        // get current user document
+        const userDoc = firebase.firestore().collection("users").doc(firebase.auth()?.currentUser?.uid).get()
+            .then((doc) => {
+                if (doc.exists) {
+                    setUser({ ...doc.data(), id: doc.id });
+                    console.log(doc.data())
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [firebase.auth()?.currentUser?.uid]);
 
     const getCurrentUser = async () => {
         try {
@@ -83,9 +96,9 @@ function UserProfile(props) {
                 style={styles.image}
             ></Image>
             </TouchableOpacity>
-            <Text style={styles.name}>kjb</Text>
+            <Text style={styles.name}>{user.name}</Text>
             <Text style={styles.description}>
-                description description description description description description
+                {user.description || "Associate Full Stack Engineer | Software Engineering Undergraduate at SLIIT | Developer | Blogger | Tech Enthusiast"}
             </Text>
 
 
