@@ -13,7 +13,7 @@ import {firebase} from "../../firebaseConfig";
 
 const ApplyJob = ({navigation}) => {
     // get current user details
-    const [name, setName] = useState();
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [description, setDescription] = useState("");
@@ -51,7 +51,7 @@ const ApplyJob = ({navigation}) => {
         .then(() => {
             console.log("User updated successfully");
             setIsSubmitting(false);
-            navigation.navigate("JobList");
+            navigation.navigate("Profile");
         }).catch((error) => {
             console.log(error);
             setIsSubmitting(false);
@@ -64,7 +64,7 @@ const ApplyJob = ({navigation}) => {
                 uri: 'https://firebasestorage.googleapis.com/v0/b/job-detective-b2b72.appspot.com/o/myDocs%2FTiny%20people%20searching%20for%20business%20opportunities.jpg?alt=media&token=df08c090-4fa8-4c78-8a2d-5f004ce959fb',
             }} style={{width: '100%', height: 200, alignSelf: 'center'}}/>
             <ScrollView style={styles.scrollView}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} style={{overflow: "scroll"}}>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}  style={{overflow: "scroll"}}>
 
                     <View style={styles.container}>
                         <TextInput
@@ -111,7 +111,7 @@ const ApplyJob = ({navigation}) => {
                             }} isLoadingText="Submitting"
                                     onPress={handleSubmit}
                             >
-                                Apply Now
+                                Update Profile
                             </Button>
                         </VStack>
                     </View>
@@ -201,7 +201,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     scrollView: {
-        backgroundColor: 'pink',
         marginHorizontal: 20,
     },
 });
