@@ -90,7 +90,7 @@ export default function EditCompany({ navigation, route }) {
       flex: 1,
     },
     button: {
-      backgroundColor: "#0891b2",
+      backgroundColor: "#1253bc",
       padding: 15,
       borderRadius: 5,
       marginBottom: 7,
