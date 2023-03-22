@@ -30,6 +30,7 @@ import { NativeBaseProvider, Text, Box } from "native-base";
 import EditCompany from "./src/screens/EditCompany";
 import ApplyJob from "./src/screens/ApplyJob";
 import InterviewPreparation from "./src/screens/InterviewPreparation";
+import UpdateProfile from "./src/screens/UpdateProfile";
 
 const CustomDrawerContent = (props) => {
   return (
@@ -123,6 +124,7 @@ export default function App() {
           name="Add new Interview"
           component={AddInterviewQuestion}
         />
+        <Stack.Screen name="Update Profile" component={UpdateProfile} />
       </Stack.Navigator>
     </NavigationContainer>
   );

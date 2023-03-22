@@ -3,33 +3,22 @@ import {
     View,
     TextInput,
     StyleSheet,
-    Text,
-    TouchableOpacity,
     TouchableWithoutFeedback,
     Keyboard,
     ScrollView,
     Image,
 } from "react-native";
-import {Input, NativeBaseProvider, Button, Stack, Center, Icon, VStack} from "native-base";
-import {firebase, storage} from "../../firebaseConfig";
-import * as DocumentPicker from "expo-document-picker";
-import {ref, getDownloadURL, uploadBytesResumable} from "firebase/storage";
-import {Ionicons} from "@expo/vector-icons";
+import { NativeBaseProvider, Button, Icon, VStack} from "native-base";
+import {firebase} from "../../firebaseConfig";
 
-const ApplyJob = ({route, navigation}) => {
+const ApplyJob = ({navigation}) => {
     // get current user details
-    const [name, setName] = useState();
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
-    const [yearsOfExperience, setYearsOfExperience] = useState("");
-    const [currentPosition, setCurrentPosition] = useState("");
-    const [fileName, setFileName] = useState("");
-    const [blobFile, setBlobFile] = useState(null);
-    const [resumeUrl, setResumeUrl] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [description, setDescription] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const {id} = route.params;
 
     useEffect(() => {
         // get current user document
@@ -40,6 +29,7 @@ const ApplyJob = ({route, navigation}) => {
                     setName(doc.data().name)
                     setEmail(doc.data().email)
                     setPhone(doc.data().phone)
+                    setDescription(doc.data().description)
                 }
             })
             .catch((error) => {
@@ -48,84 +38,33 @@ const ApplyJob = ({route, navigation}) => {
     }, [firebase.auth()?.currentUser?.uid]);
 
 
-    const pickDocument = async () => {
-        setIsLoading(true)
-        let result = await DocumentPicker.getDocumentAsync({})
-        if (result != null) {
-            const r = await fetch(result.uri);
-            const b = await r.blob();
-            setFileName(result.name)
-            setBlobFile(b)
-        }
-        setIsLoading(false)
-    }
-
-
-    const isUploadCompleted = (isCompleted) => {
-        console.log("isCompleted", isCompleted)
-    }
-
-    const UploadFile = (blobFile, fileName, isUploadCompleted) => {
-        setIsSubmitting(true)
-        if (!blobFile) return;
-        const sotrageRef = ref(storage, `myDocs/${fileName}`); //LINE A
-        const uploadTask = uploadBytesResumable(sotrageRef, blobFile); //LINE B
-        uploadTask.on(
-            "state_changed", null,
-            (error) => console.log(error),
-            () => {
-                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => { //LINE C
-                    console.log("File available at", downloadURL);
-                    isUploadCompleted(true)
-                    setResumeUrl(downloadURL)
-                    return downloadURL
-                });
-            }
-        );
-
-    }
 
     const handleSubmit = async () => {
-        // add details to applicants field of corresponding job post
-        await UploadFile(blobFile, fileName, isUploadCompleted);
-
-        firebase
-            .firestore()
-            .collection("jobPosts")
-            .doc(id)
-            .update({
-                applicants: firebase.firestore.FieldValue.arrayUnion({
-                    name,
-                    email,
-                    phone,
-                    yearsOfExperience,
-                    currentPosition,
-                    resumeUrl,
-                }),
-            })
-            .then(() => {
-                console.log("Applicant added");
-                setCurrentPosition("");
-                setYearsOfExperience("");
-                setPhone("");
-                setEmail("");
-                setName("");
-                setIsSubmitting(false)
-                navigation.goBack();
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+        // update user details
+        setIsSubmitting(true);
+        const userDoc = firebase.firestore().collection("users").doc(firebase.auth()?.currentUser?.uid).update({
+            name: name,
+            email: email,
+            phone: phone,
+            description: description,
+        })
+        .then(() => {
+            console.log("User updated successfully");
+            setIsSubmitting(false);
+            navigation.navigate("Profile");
+        }).catch((error) => {
+            console.log(error);
+            setIsSubmitting(false);
+        });
     };
 
     return (
         <NativeBaseProvider>
-
             <Image source={{
                 uri: 'https://firebasestorage.googleapis.com/v0/b/job-detective-b2b72.appspot.com/o/myDocs%2FTiny%20people%20searching%20for%20business%20opportunities.jpg?alt=media&token=df08c090-4fa8-4c78-8a2d-5f004ce959fb',
             }} style={{width: '100%', height: 200, alignSelf: 'center'}}/>
             <ScrollView style={styles.scrollView}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} style={{overflow: "scroll"}}>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}  style={{overflow: "scroll"}}>
 
                     <View style={styles.container}>
                         <TextInput
@@ -152,42 +91,16 @@ const ApplyJob = ({route, navigation}) => {
                             required
                         />
                         <TextInput
-                            style={styles.input}
-                            placeholder="Years of Experience"
-                            value={yearsOfExperience}
-                            onChangeText={(value) => setYearsOfExperience(value)}
-                            keyboardType="numeric"
+                            style={styles.inputDescription}
+                            placeholder="Description"
+                            value={description}
+                            onChangeText={(value) => setDescription(value)}
+                            maxLength={500}
+                            multiline
                             required
                         />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Current Position"
-                            value={currentPosition}
-                            onValueChange={(value) => setCurrentPosition(value)}
-                            required
-                        />
-                        {/*<TouchableOpacity style={styles.button} onPress={pickDocument}>*/}
-                        {/*    <Text style={styles.buttonText}>Choose Resume</Text>*/}
-                        {/*</TouchableOpacity>*/}
 
-                        {/*<TouchableOpacity style={styles.button} onPress={handleSubmit}>*/}
-                        {/*    <Text style={styles.buttonText}>Apply</Text>*/}
-                        {/*</TouchableOpacity>*/}
                         <VStack space={4}>
-                            <Button leftIcon={<Icon as={Ionicons} name="cloud-upload-outline" size="sm"/>}
-                                    isLoading={isLoading}
-                                    _loading={{
-                                        bg: "amber.400:alpha.70",
-                                        _text: {
-                                            color: "coolGray.700"
-                                        }
-                                    }} _spinner={{
-                                color: "white"
-                            }} isLoadingText="Submitting"
-                                    onPress={pickDocument}>
-                                Pick Resume
-                            </Button>
-
                             <Button isLoading={isSubmitting} _loading={{
                                 bg: "amber.400:alpha.70",
                                 _text: {
@@ -198,7 +111,7 @@ const ApplyJob = ({route, navigation}) => {
                             }} isLoadingText="Submitting"
                                     onPress={handleSubmit}
                             >
-                                Apply Now
+                                Update Profile
                             </Button>
                         </VStack>
                     </View>
@@ -288,7 +201,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     scrollView: {
-        backgroundColor: 'pink',
         marginHorizontal: 20,
     },
 });

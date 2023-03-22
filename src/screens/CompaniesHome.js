@@ -12,7 +12,7 @@ import {
 import { Button, FlatList, TouchableOpacity } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
 import { firebase } from "../../firebaseConfig";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import { useRef } from "react";
 
@@ -120,7 +120,7 @@ export default function CompaniesHome({ navigation, route }) {
             height="45"
             selectedValue={selectedLocation}
             color="primary.50"
-            backgroundColor="primary.900"
+            // backgroundColor="primary.900"
             accessibilityLabel="Select a Location"
             placeholder="Select a Location"
             onValueChange={(itemValue) => setSelectedLocation(itemValue)}
@@ -141,7 +141,7 @@ export default function CompaniesHome({ navigation, route }) {
             height="45"
             selectedValue={selectedIndustry}
             color="primary.50"
-            backgroundColor="primary.900"
+            // backgroundColor="primary.900"
             accessibilityLabel="Select an Industry"
             placeholder="Select an Industry"
             onValueChange={(itemValue) => setSelectedIndustry(itemValue)}
@@ -173,7 +173,7 @@ export default function CompaniesHome({ navigation, route }) {
                 width="100%"
                 rounded="lg"
                 overflow="hidden"
-                borderColor="coolGray.200"
+                borderColor="white"
                 borderWidth="1"
                 _dark={{
                   borderColor: "coolGray.600",
@@ -187,7 +187,7 @@ export default function CompaniesHome({ navigation, route }) {
                   backgroundColor: "gray.50",
                 }}
               >
-                <Box p="2" bg="primary.600" h={10} shadow={4}>
+                <Box p="2" bg="#1253bc" h={10} shadow={4}>
                   <FontAwesome5
                     style={{ position: "absolute", right: 10, top: 10 }}
                     name="edit"
@@ -230,7 +230,14 @@ export default function CompaniesHome({ navigation, route }) {
                         }}
                         fontWeight="800"
                       >
-                        {item.ratings} Stars
+                        {Array.from(Array(Math.round(item.ratings)), (e, i) => (
+                          <FontAwesome
+                            key={i}
+                            name="star"
+                            size={15}
+                            color="orange"
+                          ></FontAwesome>
+                        ))}
                       </Text>
                     </HStack>
                   </HStack>
@@ -246,7 +253,7 @@ export default function CompaniesHome({ navigation, route }) {
         onPressMain={() => {
           navigation.navigate("Add New Company");
         }}
-        color="#155e75"
+        color="#1253bc"
       />
     </View>
   );

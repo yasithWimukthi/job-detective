@@ -31,7 +31,12 @@ const LoginScreen = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Login</Text>
+            <View style={styles.textContainer}>
+                <Text style={styles.helloAgain}>Hello Again !</Text>
+                <Text style={styles.welcomeBav}>
+                    Welcome back you,ve{"\n"}been missed !
+                </Text>
+            </View>
             <TextInput
                 style={styles.input}
                 placeholder="Email"
@@ -56,8 +61,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#fff',
+        justifyContent: 'flex-start',
+        backgroundColor: "rgba(244,239,243,1)",
     },
     title: {
         fontSize: 24,
@@ -83,6 +88,25 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
     },
+    helloAgain: {
+        fontFamily: "roboto-700",
+        color: "rgba(42,38,51,1)",
+        fontSize: 30,
+        opacity: 0.84,
+        marginTop:10,
+        height:50,
+        textAlign: "center",
+    },
+    welcomeBav: {
+        fontFamily: "roboto-regular",
+        color: "rgba(155,155,155,1)",
+        textAlign: "center",
+        fontSize: 24,
+        marginBottom: 50,
+    },
+    textContainer:{
+    }
+
 });
 
 export default LoginScreen;
