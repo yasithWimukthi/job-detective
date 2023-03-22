@@ -5,7 +5,11 @@ import {firebase, storage} from "../../firebaseConfig";
 import * as DocumentPicker from "expo-document-picker";
 import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { useNavigation } from "@react-navigation/native";
+
 function BottomSelector() {
+
+
 
     return <Center>
         <Actionsheet isOpen={isOpen} onClose={onClose}>
@@ -28,6 +32,8 @@ function BottomSelector() {
 }
 
 function UserProfile(props) {
+
+    const navigation = useNavigation();
 
     const {
         isOpen,
@@ -165,8 +171,6 @@ function UserProfile(props) {
     }
 
 
-
-
     return (
         <View style={styles.container}>
             <TouchableOpacity activeOpacity = { .5 } onPress={onOpen }>
@@ -182,6 +186,10 @@ function UserProfile(props) {
             <Text style={styles.description}>
                 {user.description || "Associate Full Stack Engineer | Software Engineering Undergraduate at SLIIT | Developer | Blogger | Tech Enthusiast"}
             </Text>
+            {/*update profile button*/}
+            <TouchableOpacity style={styles.updateButton} onPress={() => navigation.navigate("Update Profile")}>
+                <Text style={styles.buttonText}>Update Profile</Text>
+            </TouchableOpacity>
 
 
             <NativeBaseProvider>
@@ -210,7 +218,8 @@ function UserProfile(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
+        padding: 10
     },
     image: {
         width: 200,
@@ -231,7 +240,23 @@ const styles = StyleSheet.create({
         // fontFamily: "roboto-regular",
         color: "rgba(157,163,167,1)",
         marginLeft: 19
-    }
+    },
+    updateButton: {
+        width: '100%',
+        height: 40,
+        backgroundColor: "#0A66C2",
+        borderRadius: 100,
+        marginTop: 20,
+        padding: 8,
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+    },
 });
 
 export default UserProfile;
