@@ -13,6 +13,8 @@ const JobMyPosts = () => {
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
+  let userId = firebase.auth()?.currentUser?.uid || "001";
+
   useEffect(() => {
     setLoading(true);
     // Fetch job posts from Firebase Firestore
@@ -23,7 +25,7 @@ const JobMyPosts = () => {
         const posts = [];
         querySnapshot.forEach((doc) => {
           //TODO: change userID to the current user's ID
-          if (doc.data().userID === "001") {
+          if (doc.data().userID === userId) {
             posts.push({ ...doc.data(), id: doc.id });
           }
         });

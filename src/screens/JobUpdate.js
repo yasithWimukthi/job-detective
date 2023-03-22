@@ -27,6 +27,8 @@ const JobUpdate = ({ navigation, route }) => {
 
   const { id, iconColor } = route.params;
 
+  let userId = firebase.auth()?.currentUser?.uid || "001";
+
   useEffect(() => {
     setLoading(true);
     // get the job post from the firestore database
@@ -61,7 +63,7 @@ const JobUpdate = ({ navigation, route }) => {
       // create a new job post object
       const updatedJobPost = {
         //TODO: change userID to the current user's ID
-        userID: firebase.auth()?.currentUser?.uid || "001",
+        userID: userId,
         title,
         description,
         salary: salary,
