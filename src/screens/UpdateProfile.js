@@ -9,18 +9,16 @@ import {
     Image,
 } from "react-native";
 import { NativeBaseProvider, Button, Icon, VStack} from "native-base";
-import {Ionicons} from "@expo/vector-icons";
+import {firebase} from "../../firebaseConfig";
 
-const ApplyJob = ({route, navigation}) => {
+const ApplyJob = ({navigation}) => {
     // get current user details
     const [name, setName] = useState();
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [description, setDescription] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const {id} = route.params;
 
     useEffect(() => {
         // get current user document
@@ -42,36 +40,22 @@ const ApplyJob = ({route, navigation}) => {
 
 
     const handleSubmit = async () => {
-        // add details to applicants field of corresponding job post
-        await UploadFile(blobFile, fileName, isUploadCompleted);
-
-        firebase
-            .firestore()
-            .collection("jobPosts")
-            .doc(id)
-            .update({
-                applicants: firebase.firestore.FieldValue.arrayUnion({
-                    name,
-                    email,
-                    phone,
-                    yearsOfExperience,
-                    currentPosition,
-                    resumeUrl,
-                }),
-            })
-            .then(() => {
-                console.log("Applicant added");
-                setCurrentPosition("");
-                setYearsOfExperience("");
-                setPhone("");
-                setEmail("");
-                setName("");
-                setIsSubmitting(false)
-                navigation.goBack();
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+        // update user details
+        setIsSubmitting(true);
+        const userDoc = firebase.firestore().collection("users").doc(firebase.auth()?.currentUser?.uid).update({
+            name: name,
+            email: email,
+            phone: phone,
+            description: description,
+        })
+        .then(() => {
+            console.log("User updated successfully");
+            setIsSubmitting(false);
+            navigation.navigate("JobList");
+        }).catch((error) => {
+            console.log(error);
+            setIsSubmitting(false);
+        });
     };
 
     return (
@@ -107,20 +91,15 @@ const ApplyJob = ({route, navigation}) => {
                             required
                         />
                         <TextInput
-                            style={styles.input}
-                            placeholder="Years of Experience"
-                            value={yearsOfExperience}
-                            onChangeText={(value) => setYearsOfExperience(value)}
-                            keyboardType="numeric"
+                            style={styles.inputDescription}
+                            placeholder="Description"
+                            value={description}
+                            onChangeText={(value) => setDescription(value)}
+                            maxLength={500}
+                            multiline
                             required
                         />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Current Position"
-                            value={currentPosition}
-                            onValueChange={(value) => setCurrentPosition(value)}
-                            required
-                        />
+
                         <VStack space={4}>
                             <Button isLoading={isSubmitting} _loading={{
                                 bg: "amber.400:alpha.70",
