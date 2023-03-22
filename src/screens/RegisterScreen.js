@@ -35,6 +35,7 @@ const SignupScreen = () => {
                 profileImage:"",
                 resumeUrl:"",
                 phone:"",
+                description:"",
             }
             try {
                 // save the job post object to the firestore database by uid

@@ -93,8 +93,17 @@ function UserProfile(props) {
     }
 
     const selectFile = async () => {
+
+        const options = {
+            storageOptions: {
+                path: 'images',
+                mediaType: 'photo',
+            },
+            includeBase64: true,
+        }
+
         const result = await launchCamera(
-            (response) => {
+            options,(response) => {
             console.log(response);
             if (response.didCancel) {
                 console.log("User cancelled image picker");
