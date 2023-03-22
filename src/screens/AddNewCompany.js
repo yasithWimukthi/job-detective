@@ -65,7 +65,6 @@ export default function AddNewCompany({ navigation }) {
       width: "98%",
       height: "98%",
       backgroundColor: "#ffffff",
-
       borderRadius: 10,
     },
     inputContainer: {
