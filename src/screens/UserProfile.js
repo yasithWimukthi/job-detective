@@ -8,9 +8,6 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import { useNavigation } from "@react-navigation/native";
 
 function BottomSelector() {
-
-
-
     return <Center>
         <Actionsheet isOpen={isOpen} onClose={onClose}>
             <Actionsheet.Content>
@@ -60,13 +57,15 @@ function UserProfile(props) {
             .then((doc) => {
                 if (doc.exists) {
                     setUser({ ...doc.data(), id: doc.id });
-                    console.log(doc.data())
                 }
             })
             .catch((error) => {
                 console.log(error);
             });
+
+        getAppliedJobsOfUser(firebase.auth()?.currentUser?.uid);
     }, [firebase.auth()?.currentUser?.uid]);
+
 
     const getCurrentUser = async () => {
         try {
@@ -90,9 +89,36 @@ function UserProfile(props) {
     const getAppliedJobsOfUser = async (userID) => {
         const appliedJobsArr = [];
         try {
-            const querySnapshot = await firebase.firestore().collection("users").doc(userID);
-            const appliedJobs = querySnapshot.get("appliedJobs");
-            console.log(appliedJobs);
+            await firebase.firestore().collection('users').doc(firebase.auth()?.currentUser?.uid).get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        const appliedJobs = doc.data().appliedJobs; // get the array of applied jobs from the document data
+
+                        // log the array of applied job document IDs
+                        console.log(appliedJobs);
+
+                        // loop through the array of applied job document IDs and retrieve the jobs where document ID matches
+                        appliedJobs.forEach((jobID) => {
+                            console.log(jobID);
+                            firebase.firestore().collection('jobPosts').doc(jobID).get()
+                                .then((doc) => {
+                                    if (doc.exists) {
+                                        appliedJobsArr.push(doc.data());
+                                        console.log(doc.data())
+                                        setAppliedJobs(appliedJobsArr);
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                        });
+                    } else {
+                        console.log('No such document!');
+                    }
+                })
+                .catch((error) => {
+                    console.log('Error getting document:', error);
+                });
         }catch (error) {
             console.log(error);
         }
