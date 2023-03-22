@@ -107,6 +107,7 @@ export default function App() {
         <Stack.Screen name="Profile" component={UserProfile} />
         <Stack.Screen name="Edit Company" component={EditCompany} />
         <Stack.Screen name="Apply Job" component={ApplyJob} />
+        <Stack.Screen name="Update Profile" component={UserProfile} />
       </Stack.Navigator>
     </NavigationContainer>
   );
