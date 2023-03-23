@@ -59,7 +59,7 @@ const InterviewPreparation = () => {
     },
   ];
 
-  //like or unlike
+  //handling like or unlike
   const handleFavourites = (id, status) => {
     const updatedStatus = !status;
     firebase
@@ -105,26 +105,10 @@ const InterviewPreparation = () => {
               <TouchableOpacity style={styles.card}>
                 <View style={styles.textContainer}>
                   <View style={styles.header}>
-                    <Text
-                      style={styles.question}
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                    >
+                    <Text style={styles.question} ellipsizeMode="tail">
                       {item.question}
                     </Text>
-                    {/* <TouchableOpacity
-                      style={styles.heartIcon}
-                      onPress={() => handleFavourits(item.id)}
-                    >
-                      <FontAwesome5
-                        name="heart"
-                        solid={item.status}
-                        style={[
-                          styles.icon,
-                          item.status && styles.iconFavorite,
-                        ]}
-                      />
-                    </TouchableOpacity> */}
+
                     <TouchableOpacity
                       onPress={() => handleFavourites(item.id, item.status)}
                     >
@@ -240,6 +224,7 @@ const styles = StyleSheet.create({
   },
   question: {
     fontSize: 18,
+    fontWeight: "bold",
     color: "#3f3f3f",
     flex: 1,
   },

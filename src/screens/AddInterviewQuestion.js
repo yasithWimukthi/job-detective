@@ -12,12 +12,13 @@ import { firebase } from "../../firebaseConfig";
 import { Select } from "native-base";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { NativeBaseProvider } from "native-base";
+import Toast from "react-native-toast-message";
 
 const AddInterviewQuestion = ({ navigation }) => {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [qtype, setQtype] = useState("");
-  const [status, setStatus] = useState(false);
+  // const [status, setStatus] = useState(false);
 
   const handleSubmit = async () => {
     if (question && answer && qtype) {
@@ -25,7 +26,6 @@ const AddInterviewQuestion = ({ navigation }) => {
 
       // create a new interview post object
       const interviews = {
-        //TODO: change userID to the current user's ID
         userID: firebase.auth()?.currentUser?.uid || "001",
         question,
         answer,
@@ -37,10 +37,25 @@ const AddInterviewQuestion = ({ navigation }) => {
         // save the interview post object to the firestore database
         await firebase.firestore().collection("interviews").add(interviews);
 
+        // show a success toast message
+        Toast.show({
+          type: "success",
+          text1: "Interview added",
+          text2: "Your interview post has been successfully added",
+        });
+
         // navigate back to interviews post list page
         navigation.goBack();
       } catch (error) {
         console.log(error);
+
+        // show an error toast message
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: "Failed to save interview post",
+        });
+
         Alert.alert("Error", "Failed to save interview post");
       }
     } else {
