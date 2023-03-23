@@ -5,10 +5,8 @@ import {View, StyleSheet, TouchableOpacity, Text} from "react-native";
 import {FontAwesome5} from "@expo/vector-icons";
 import {firebase} from "../../firebaseConfig";
 
-const AppliedJobCard = ({item, iconBG}) => {
+const AppliedJobCard = ({item, iconBG,removeItem,changeIsCancelPressed}) => {
     const [iconColor, sectionColor] = useState("");
-
-    console.log(item)
 
     // Map job titles to corresponding FontAwesome icons
     const iconName = iconMapping[item.title] || "briefcase";
@@ -28,10 +26,12 @@ const AppliedJobCard = ({item, iconBG}) => {
         firebase.firestore().collection("users").doc(firebase.auth()?.currentUser?.uid).update({
             appliedJobs: firebase.firestore.FieldValue.arrayRemove(id.toString()),
         });
+        removeItem(id);
+        changeIsCancelPressed();
     }
 
     return (
-        <view style={{display:'flex',marginBottom:10}}>
+        <View style={{display:'flex',marginBottom:10,flexDirection:"row"}}>
             <View
                 style={{
                     paddingVertical: 35,
@@ -85,7 +85,7 @@ const AppliedJobCard = ({item, iconBG}) => {
                 </TouchableOpacity>
 
             </View>
-        </view>
+        </View>
     );
 };
 
