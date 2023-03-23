@@ -3,9 +3,12 @@ import iconMapping from "../data/iconMapping";
 import getRandomColor from "../utils/RandomColor";
 import {View, StyleSheet, TouchableOpacity, Text} from "react-native";
 import {FontAwesome5} from "@expo/vector-icons";
+import {firebase} from "../../firebaseConfig";
 
 const AppliedJobCard = ({item, iconBG}) => {
     const [iconColor, sectionColor] = useState("");
+
+    console.log(item)
 
     // Map job titles to corresponding FontAwesome icons
     const iconName = iconMapping[item.title] || "briefcase";
@@ -18,6 +21,14 @@ const AppliedJobCard = ({item, iconBG}) => {
             sectionColor(getRandomColor());
         }
     }, []);
+
+    // remove id from applied jobs array in users collection
+    const handleRemove = (id) => {
+        console.log(id)
+        firebase.firestore().collection("users").doc(firebase.auth()?.currentUser?.uid).update({
+            appliedJobs: firebase.firestore.FieldValue.arrayRemove(id.toString()),
+        });
+    }
 
     return (
         <view style={{display:'flex',marginBottom:10}}>
@@ -46,18 +57,33 @@ const AppliedJobCard = ({item, iconBG}) => {
                     {item.salary ? "LKR " : ""}
                     {item.salary}
                 </Text>
-                <Text style={styles.description} numberOfLines={1} ellipsizeMode="tail">
-                    {item.description}
-                </Text>
-                <View style={styles.cardFooter}>
-                    <Text style={styles.date}>
-                        {new Date(item.date).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                        })}
-                    </Text>
-                </View>
+                {/*<Text style={styles.description} numberOfLines={1} ellipsizeMode="tail">*/}
+                {/*    {item.description}*/}
+                {/*</Text>*/}
+                {/*<View style={styles.cardFooter}>*/}
+                {/*    <Text style={styles.date}>*/}
+                {/*        {new Date(item.date).toLocaleDateString("en-US", {*/}
+                {/*            year: "numeric",*/}
+                {/*            month: "long",*/}
+                {/*            day: "numeric",*/}
+                {/*        })}*/}
+                {/*    </Text>*/}
+                {/*</View>*/}
+                {/*cancel button*/}
+                <TouchableOpacity
+                    style={{
+                        backgroundColor: "#DC3545",
+                        borderRadius: 10,
+                        padding: 10,
+                        marginTop: 10,
+                        elevation: 5,
+                        width: 100,
+                    }}
+                    onPress={() => handleRemove(item.id)}
+                >
+                    <Text style={styles.buttonText}>Cancel</Text>
+                </TouchableOpacity>
+
             </View>
         </view>
     );
@@ -109,6 +135,13 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
     },
+    buttonText: {
+        fontSize: 14,
+        fontWeight: "bold",
+        color: "#fff",
+        textAlign: "center",
+
+    }
 });
 
 export default AppliedJobCard;

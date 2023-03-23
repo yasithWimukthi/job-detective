@@ -131,7 +131,7 @@ const JobView = ({ route }) => {
       .collection("users")
       .doc(firebase.auth()?.currentUser?.uid)
       .update({
-        appliedJobs: firebase.firestore.FieldValue.arrayUnion(id),
+        appliedJobs: firebase.firestore.FieldValue.arrayUnion(jobPost.id),
       })
       .then(() => {
         // display alert message
