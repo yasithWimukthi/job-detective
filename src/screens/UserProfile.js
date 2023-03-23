@@ -69,6 +69,10 @@ function UserProfile(props) {
         getAppliedJobsOfUser(firebase.auth()?.currentUser?.uid);
     }, [firebase.auth()?.currentUser?.uid]);
 
+    // useEffect(() => {
+    //     getAppliedJobsOfUser(firebase.auth()?.currentUser?.uid);
+    // });
+
 
     const getCurrentUser = async () => {
         try {
@@ -79,7 +83,7 @@ function UserProfile(props) {
                 .onSnapshot((doc) => {
                     if (doc.exists) {
                         setUser({...doc.data(), id: doc.id});
-                        console.log(doc.data())
+                        // console.log(doc.data())
                     }
                 });
             // setUser(user);
@@ -98,17 +102,21 @@ function UserProfile(props) {
                         const appliedJobs = doc.data().appliedJobs; // get the array of applied jobs from the document data
 
                         // log the array of applied job document IDs
-                        console.log(appliedJobs);
+                        // console.log(appliedJobs);
 
                         // loop through the array of applied job document IDs and retrieve the jobs where document ID matches
                         appliedJobs.forEach((jobID) => {
-                            console.log(jobID);
+                            // console.log(jobID);
                             firebase.firestore().collection('jobPosts').doc(jobID).get()
                                 .then((doc) => {
                                     if (doc.exists) {
-                                        setAppliedJobs([...appliedJobsArr, doc.data()]);
-                                        appliedJobsArr.push(doc.data());
-                                        console.log(doc.data())
+                                        let job = {
+                                            id: doc.id,
+                                            ...doc.data()
+                                        }
+                                        setAppliedJobs([...appliedJobsArr, job]);
+                                        appliedJobsArr.push(job);
+                                        // console.log(job)
                                     }
                                 })
                                 .catch((error) => {
