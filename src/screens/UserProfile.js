@@ -1,11 +1,14 @@
 import React, {Component, useEffect, useState} from "react";
-import {StyleSheet, View, Image, Text, TouchableOpacity} from "react-native";
-import { Button, Actionsheet, useDisclose, Box, Center, NativeBaseProvider } from "native-base";
+import {StyleSheet, View, Image, Text, TouchableOpacity, FlatList} from "react-native";
+import {Button, Actionsheet, useDisclose, Box, Center, NativeBaseProvider} from "native-base";
 import {firebase, storage} from "../../firebaseConfig";
 import * as DocumentPicker from "expo-document-picker";
 import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import { useNavigation } from "@react-navigation/native";
+import {useNavigation} from "@react-navigation/native";
+import JobCard from "../components/JobCard";
+import {FloatingAction} from "react-native-floating-action";
+import AppliedJobCard from "../components/AppliedJobCard";
 
 function BottomSelector() {
     return <Center>
@@ -56,7 +59,7 @@ function UserProfile(props) {
         const userDoc = firebase.firestore().collection("users").doc(firebase.auth()?.currentUser?.uid).get()
             .then((doc) => {
                 if (doc.exists) {
-                    setUser({ ...doc.data(), id: doc.id });
+                    setUser({...doc.data(), id: doc.id});
                 }
             })
             .catch((error) => {
@@ -75,13 +78,13 @@ function UserProfile(props) {
                 .doc(firebase.auth()?.currentUser?.uid)
                 .onSnapshot((doc) => {
                     if (doc.exists) {
-                        setUser({ ...doc.data(), id: doc.id });
+                        setUser({...doc.data(), id: doc.id});
                         console.log(doc.data())
                     }
                 });
             // setUser(user);
             // console.log(user);
-        }catch (error) {
+        } catch (error) {
             console.log(error);
         }
     }
@@ -103,15 +106,16 @@ function UserProfile(props) {
                             firebase.firestore().collection('jobPosts').doc(jobID).get()
                                 .then((doc) => {
                                     if (doc.exists) {
+                                        setAppliedJobs([...appliedJobsArr, doc.data()]);
                                         appliedJobsArr.push(doc.data());
                                         console.log(doc.data())
-                                        setAppliedJobs(appliedJobsArr);
                                     }
                                 })
                                 .catch((error) => {
                                     console.log(error);
                                 });
                         });
+                        setAppliedJobs(appliedJobsArr);
                     } else {
                         console.log('No such document!');
                     }
@@ -119,7 +123,7 @@ function UserProfile(props) {
                 .catch((error) => {
                     console.log('Error getting document:', error);
                 });
-        }catch (error) {
+        } catch (error) {
             console.log(error);
         }
     }
@@ -135,20 +139,20 @@ function UserProfile(props) {
         }
 
         const result = await launchCamera(
-            options,(response) => {
-            console.log(response);
-            if (response.didCancel) {
-                console.log("User cancelled image picker");
-            } else if (response.errorCode) {
-                console.log("ImagePicker Error: ", response.errorCode);
-            } else if (response.customButton) {
-                console.log("User tapped custom button: ", response.customButton);
-            } else {
-                // const source = { uri: response.uri };
-                // setFileName(response.fileName);
-                // setBlobFile(response);
-            }
-        });
+            options, (response) => {
+                console.log(response);
+                if (response.didCancel) {
+                    console.log("User cancelled image picker");
+                } else if (response.errorCode) {
+                    console.log("ImagePicker Error: ", response.errorCode);
+                } else if (response.customButton) {
+                    console.log("User tapped custom button: ", response.customButton);
+                } else {
+                    // const source = { uri: response.uri };
+                    // setFileName(response.fileName);
+                    // setBlobFile(response);
+                }
+            });
     };
 
     const isUploadCompleted = (isCompleted) => {
@@ -199,14 +203,14 @@ function UserProfile(props) {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity activeOpacity = { .5 } onPress={onOpen }>
-            <Image
-                source={{
-                    uri: user.profileImage|| 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
-                }}
-                resizeMode="contain"
-                style={styles.image}
-            ></Image>
+            <TouchableOpacity activeOpacity={.5} onPress={onOpen}>
+                <Image
+                    source={{
+                        uri: user.profileImage || 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
+                    }}
+                    resizeMode="contain"
+                    style={styles.image}
+                ></Image>
             </TouchableOpacity>
             <Text style={styles.name}>{user.name}</Text>
             <Text style={styles.description}>
@@ -217,6 +221,35 @@ function UserProfile(props) {
                 <Text style={styles.buttonText}>Update Profile</Text>
             </TouchableOpacity>
 
+            {/*<>*/}
+            {/*    <FlatList*/}
+            {/*        data={appliedJobs}*/}
+            {/*        renderItem={({item}) => <AppliedJobCard item={item}/>}*/}
+            {/*        keyExtractor={(item) => item.id}*/}
+            {/*    />*/}
+            {/*</>*/}
+
+            {
+                appliedJobs.length > 0 ?
+                    <Text style={{fontSize: 18, color: "rgba(39,41,50,1)", marginTop: 20,marginLeft:10}}>Applied Jobs</Text>
+                    :
+                    null
+            }
+
+            {
+                appliedJobs.length > 0 ?
+                    <FlatList
+                        data={appliedJobs}
+                        renderItem={({item}) => <AppliedJobCard item={item}/>}
+                        keyExtractor={(item) => item.id}
+                        style={{marginTop: 20}}
+                    />
+                    :
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={{fontSize: 18, color: '#000'}}>No applied jobs</Text>
+                    </View>
+            }
+
 
             <NativeBaseProvider>
                 <Center flex={1} px="3">
@@ -226,7 +259,7 @@ function UserProfile(props) {
                                 <Box w="100%" h={60} px={4} justifyContent="center">
                                     <Text fontSize="16" color="gray.500" _dark={{
                                         color: "gray.300"
-                                    }} style={{textAlign:'center'}}>
+                                    }} style={{textAlign: 'center'}}>
                                         Choose a method
                                     </Text>
                                 </Box>
