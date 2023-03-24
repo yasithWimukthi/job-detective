@@ -16,43 +16,18 @@ import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import { useRef } from "react";
 
-export default function CompaniesHome({ navigation, route }) {
+export default function MyCompaniesHome({ navigation, route }) {
   const [modalVisible, setModalVisible] = React.useState(false);
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
-  const [companies, setCompanies] = React.useState([
-    // {
-    //   id: 1,
-    //   name: "name1",
-    //   description:
-    //     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, Provident similique accusantium nemo autem",
-    //   ratings: 4,
-    //   location: "colombo",
-    //   industry: "IT",
-    // },
-  ]);
+  const [companies, setCompanies] = React.useState([]);
   const [selectedLocation, setSelectedLocation] = React.useState();
   const [selectedIndustry, setSelectedIndustry] = React.useState();
 
   const [locations, setLocations] = React.useState([]);
   const [industries, setIndustries] = React.useState([]);
   const isFocused = useIsFocused();
-
-  const actions = [
-    {
-      text: "My Companies",
-      icon: <FontAwesome5 name="briefcase" size={24} color="white" />,
-      name: "myComp",
-      position: 1,
-    },
-    {
-      text: "Add Company",
-      icon: <FontAwesome5 name="plus" size={24} color="white" />,
-      name: "addComp",
-      position: 2,
-    },
-  ];
 
   //get companies from firebase and set to companies state
   const getCompanies = async () => {
@@ -111,6 +86,16 @@ export default function CompaniesHome({ navigation, route }) {
       return companies;
     }
   };
+
+  // //function to delete a company
+  // const deleteCompany = async (id) => {
+  //   try {
+  //     await firebase.firestore().collection("companies").doc(id).delete();
+  //     getCompanies();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   //function to navigate to edit company page with company details
   const editCompany = (company) => {
@@ -193,7 +178,15 @@ export default function CompaniesHome({ navigation, route }) {
                   backgroundColor: "gray.50",
                 }}
               >
-                <Box p="2" bg="#1253bc" h={10} shadow={4}></Box>
+                <Box p="2" bg="#1253bc" h={10} shadow={4}>
+                  <FontAwesome5
+                    style={{ position: "absolute", right: 10, top: 10 }}
+                    name="edit"
+                    size={20}
+                    color="#bfbfbf"
+                    onPress={() => editCompany(item)}
+                  ></FontAwesome5>
+                </Box>
                 <Stack p="4" space={3}>
                   <Stack space={2}>
                     <Heading size="md" ml="-1">
@@ -247,22 +240,6 @@ export default function CompaniesHome({ navigation, route }) {
           keyExtractor={(item) => item.id}
         />
       </Box>
-      {/* <FloatingAction
-        onPressMain={() => {
-          navigation.navigate("Add New Company");
-        }}
-        color="#1253bc"
-      /> */}
-      <FloatingAction
-        actions={actions}
-        onPressItem={(name) => {
-          if (name === "addComp") {
-            navigation.navigate("Add New Company");
-          } else if (name === "myComp") {
-            navigation.navigate("My Companies");
-          }
-        }}
-      />
     </View>
   );
 }

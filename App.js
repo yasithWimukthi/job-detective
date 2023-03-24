@@ -31,6 +31,7 @@ import EditCompany from "./src/screens/EditCompany";
 import ApplyJob from "./src/screens/ApplyJob";
 import InterviewPreparation from "./src/screens/InterviewPreparation";
 import UpdateProfile from "./src/screens/UpdateProfile";
+import MyCompaniesHome from "./src/screens/MyCompaniesHome";
 
 const CustomDrawerContent = (props) => {
   return (
@@ -82,7 +83,7 @@ function MyDrawer() {
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
         <Drawer.Screen name="Companies" component={CompaniesHome} />
-        <Drawer.Screen name="Homes" component={HomeScreen} />
+        {/* <Drawer.Screen name="Homes" component={HomeScreen} /> */}
         <Drawer.Screen name="Jobs" component={JobPost} />
         <Drawer.Screen name="Interviews" component={InterviewPreparation} />
         <Drawer.Screen name="Register" component={RegisterScreen} />
@@ -95,38 +96,47 @@ function MyDrawer() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Root"
-          component={MyDrawer}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Create new Job" component={JobCreate} />
-        <Stack.Screen name="My Job Postings" component={JobMyPosts} />
-        <Stack.Screen name="Companies" component={CompaniesHome} />
-        <Stack.Screen name="Add New Company" component={AddNewCompany} />
-        <Stack.Screen name="Job View" component={JobView} />
-        <Stack.Screen name="Update Job Posting" component={JobUpdate} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Profile" component={UserProfile} />
-        <Stack.Screen name="Edit Company" component={EditCompany} />
-        <Stack.Screen name="Apply Job" component={ApplyJob} />
-        <Stack.Screen name="My Favourites" component={MyFavouriteInterviews} />
-        <Stack.Screen name="Edit Interview" component={InterviewEditScreen} />
-        <Stack.Screen name="Interview Main" component={InterviewPreparation} />
-        <Stack.Screen
-          name="My Interview Postings"
-          component={MyInterviewPosts}
-        />
-        <Stack.Screen
-          name="Add new Interview"
-          component={AddInterviewQuestion}
-        />
-        <Stack.Screen name="Update Profile" component={UpdateProfile} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <NativeBaseProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Root"
+            component={MyDrawer}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="Create new Job" component={JobCreate} />
+          <Stack.Screen name="My Job Postings" component={JobMyPosts} />
+          <Stack.Screen name="Companies" component={CompaniesHome} />
+          <Stack.Screen name="Add New Company" component={AddNewCompany} />
+          <Stack.Screen name="Job View" component={JobView} />
+          <Stack.Screen name="Update Job Posting" component={JobUpdate} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Profile" component={UserProfile} />
+          <Stack.Screen name="Edit Company" component={EditCompany} />
+          <Stack.Screen name="Apply Job" component={ApplyJob} />
+          <Stack.Screen
+            name="My Favourites"
+            component={MyFavouriteInterviews}
+          />
+          <Stack.Screen name="Edit Interview" component={InterviewEditScreen} />
+          <Stack.Screen
+            name="Interview Main"
+            component={InterviewPreparation}
+          />
+          <Stack.Screen
+            name="My Interview Postings"
+            component={MyInterviewPosts}
+          />
+          <Stack.Screen
+            name="Add new Interview"
+            component={AddInterviewQuestion}
+          />
+          <Stack.Screen name="Update Profile" component={UpdateProfile} />
+          <Stack.Screen name="My Companies" component={MyCompaniesHome} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </NativeBaseProvider>
   );
 }
 
