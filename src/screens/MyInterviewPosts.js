@@ -27,7 +27,6 @@ const MyInterviewPosts = () => {
       .onSnapshot((querySnapshot) => {
         const posts = [];
         querySnapshot.forEach((doc) => {
-          //TODO: change userID to the current user's ID
           if (doc.data().userID === "001") {
             posts.push({ ...doc.data(), id: doc.id });
           }
@@ -105,11 +104,7 @@ const MyInterviewPosts = () => {
               <TouchableOpacity style={styles.card}>
                 <View style={styles.textContainer}>
                   <View style={styles.header}>
-                    <Text
-                      style={styles.question}
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                    >
+                    <Text style={styles.question} ellipsizeMode="tail">
                       {item.question}
                     </Text>
                   </View>
@@ -234,6 +229,7 @@ const styles = StyleSheet.create({
   },
   question: {
     fontSize: 18,
+    fontWeight: "bold",
     color: "#3f3f3f",
     flex: 1,
   },

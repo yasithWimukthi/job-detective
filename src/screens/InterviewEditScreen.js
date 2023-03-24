@@ -12,6 +12,7 @@ import { firebase } from "../../firebaseConfig";
 import { Select } from "native-base";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { NativeBaseProvider } from "native-base";
+import Toast from "react-native-toast-message";
 
 const InterviewEditScreen = ({ navigation, route }) => {
   const [id, setId] = useState(route.params.item.id);
@@ -23,7 +24,6 @@ const InterviewEditScreen = ({ navigation, route }) => {
   const handleUpdate = async () => {
     if (question && answer && qtype) {
       const updatedInterview = {
-        //TODO: change userID to the current user's ID
         userID: firebase.auth()?.currentUser?.uid || "001",
         question,
         answer,
@@ -39,11 +39,24 @@ const InterviewEditScreen = ({ navigation, route }) => {
           .doc(id)
           .update(updatedInterview);
 
+        // show a success toast message
+        Toast.show({
+          type: "success",
+          text1: "Interview updated",
+          text2: "Your interview post has been successfully updated",
+        });
+
         // navigate back to interviews post list page
         navigation.goBack();
       } catch (error) {
         console.log(error);
-        Alert.alert("Error", "Failed to update interviews post");
+        // show an error toast message
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: "Failed to update interview post",
+        });
+        alert("Error", "Failed to update interviews post");
       }
     } else {
       // display error message
