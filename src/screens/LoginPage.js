@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
+import LoginScreen from "react-native-login-screen";
 
 
 import { auth } from "../../firebaseConfig";
 
 
-const LoginScreen = () => {
+const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -30,30 +31,38 @@ const LoginScreen = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.textContainer}>
-                <Text style={styles.helloAgain}>Hello Again !</Text>
-                <Text style={styles.welcomeBav}>
-                    Welcome back you,ve{"\n"}been missed !
-                </Text>
-            </View>
-            <TextInput
-                style={styles.input}
-                placeholder="Email"
-                onChangeText={(text) => setEmail(text)}
-                value={email}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                onChangeText={(text) => setPassword(text)}
-                value={password}
-                secureTextEntry={true}
-            />
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
-        </View>
+        // <View style={styles.container}>
+        //     <View style={styles.textContainer}>
+        //         <Text style={styles.helloAgain}>Hello Again !</Text>
+        //         <Text style={styles.welcomeBav}>
+        //             Welcome back you,ve{"\n"}been missed !
+        //         </Text>
+        //     </View>
+        //     <TextInput
+        //         style={styles.input}
+        //         placeholder="Email"
+        //         onChangeText={(text) => setEmail(text)}
+        //         value={email}
+        //     />
+        //     <TextInput
+        //         style={styles.input}
+        //         placeholder="Password"
+        //         onChangeText={(text) => setPassword(text)}
+        //         value={password}
+        //         secureTextEntry={true}
+        //     />
+        //     <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        //         <Text style={styles.buttonText}>Login</Text>
+        //     </TouchableOpacity>
+        // </View>
+        <LoginScreen
+            // logoImageSource={require('./assets/logo-example.png')}
+            onLoginPress={handleLogin}
+            onSignupPress={() => {}}
+            onEmailChange={setEmail}
+            onPasswordChange={setPassword}
+            enablePasswordValidation
+        />
     );
 };
 
@@ -109,4 +118,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default LoginScreen;
+export default LoginPage;
