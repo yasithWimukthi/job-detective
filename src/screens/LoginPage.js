@@ -14,6 +14,11 @@ const LoginPage = () => {
 
     const navigation = useNavigation();
 
+    const onSignUpPressed = () => {
+        // navigate to signup
+        navigation.navigate("Register");
+    }
+
 
     const handleLogin = () => {
         // Handle login logic here
@@ -31,34 +36,11 @@ const LoginPage = () => {
     };
 
     return (
-        // <View style={styles.container}>
-        //     <View style={styles.textContainer}>
-        //         <Text style={styles.helloAgain}>Hello Again !</Text>
-        //         <Text style={styles.welcomeBav}>
-        //             Welcome back you,ve{"\n"}been missed !
-        //         </Text>
-        //     </View>
-        //     <TextInput
-        //         style={styles.input}
-        //         placeholder="Email"
-        //         onChangeText={(text) => setEmail(text)}
-        //         value={email}
-        //     />
-        //     <TextInput
-        //         style={styles.input}
-        //         placeholder="Password"
-        //         onChangeText={(text) => setPassword(text)}
-        //         value={password}
-        //         secureTextEntry={true}
-        //     />
-        //     <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        //         <Text style={styles.buttonText}>Login</Text>
-        //     </TouchableOpacity>
-        // </View>
+
         <LoginScreen
             // logoImageSource={require('./assets/logo-example.png')}
             onLoginPress={handleLogin}
-            onSignupPress={() => {}}
+            onSignupPress={onSignUpPressed}
             onEmailChange={setEmail}
             onPasswordChange={setPassword}
             enablePasswordValidation
