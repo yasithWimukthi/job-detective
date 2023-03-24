@@ -15,25 +15,32 @@ const JobMyPosts = () => {
 
   let userId = firebase.auth()?.currentUser?.uid || "001";
 
-  useEffect(() => {
-    setLoading(true);
-    // Fetch job posts from Firebase Firestore
-    const unsubscribe = firebase
-      .firestore()
-      .collection("jobPosts")
-      .onSnapshot((querySnapshot) => {
-        const posts = [];
-        querySnapshot.forEach((doc) => {
-          //TODO: change userID to the current user's ID
-          if (doc.data().userID === userId) {
-            posts.push({ ...doc.data(), id: doc.id });
-          }
+  const fetchJobPosts = async () => {
+    try {
+      setLoading(true);
+      // Fetch job posts from Firebase Firestore
+      const unsubscribe = firebase
+        .firestore()
+        .collection("jobPosts")
+        .onSnapshot((querySnapshot) => {
+          const posts = [];
+          querySnapshot.forEach((doc) => {
+            //TODO: change userID to the current user's ID
+            if (doc.data().userID === userId) {
+              posts.push({ ...doc.data(), id: doc.id });
+            }
+          });
+          setJobPosts(posts);
+          setLoading(false);
         });
-        setJobPosts(posts);
-        setLoading(false);
-      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    return () => unsubscribe();
+  useEffect(() => {
+    // Fetch job posts from Firebase Firestore
+    fetchJobPosts();
   }, []);
 
   const actions = [

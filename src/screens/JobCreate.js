@@ -28,7 +28,7 @@ const JobCreate = ({ navigation }) => {
   }, [title]);
 
   const handleDescriptionChange = (value) => {
-    if (value.length <= 500) {
+    if (value.length <= 1000) {
       setDescription(value);
     }
   };
@@ -110,7 +110,7 @@ const JobCreate = ({ navigation }) => {
             placeholder="Description"
             value={description}
             onChangeText={handleDescriptionChange}
-            maxLength={500}
+            // maxLength={1000}
             multiline
             required
           />

@@ -52,28 +52,36 @@ const JobView = ({ route }) => {
     ).start();
   };
 
+  const getJobPost = async () => {
+    try {
+      setLoading(true);
+
+      return await firebase
+        .firestore()
+        .collection("jobPosts")
+        .doc(id)
+        .onSnapshot((doc) => {
+          if (doc.exists) {
+            setJobPost({ ...doc.data(), id: doc.id });
+
+            // check if the current user is the owner of the job post
+            //TODO: change userID to the current user's ID
+            if (doc.data().userID === userId) {
+              setUsersPost(true);
+            }
+
+            setLoading(false);
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     startBouncing();
-    setLoading(true);
-    const unsubscribe = firebase
-      .firestore()
-      .collection("jobPosts")
-      .doc(id)
-      .onSnapshot((doc) => {
-        if (doc.exists) {
-          setJobPost({ ...doc.data(), id: doc.id });
 
-          // check if the current user is the owner of the job post
-          //TODO: change userID to the current user's ID
-          if (doc.data().userID === userId) {
-            setUsersPost(true);
-          }
-
-          setLoading(false);
-        }
-      });
-
-    return () => unsubscribe();
+    getJobPost();
   }, []);
 
   const actions = [

@@ -29,32 +29,33 @@ const JobUpdate = ({ navigation, route }) => {
 
   let userId = firebase.auth()?.currentUser?.uid || "001";
 
+  const getJobPost = async () => {
+    try {
+      setLoading(true);
+
+      await firebase
+        .firestore()
+        .collection("jobPosts")
+        .doc(id)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            setTitle(doc.data().title);
+            setDescription(doc.data().description);
+            setSalary(doc.data().salary);
+            setdate(doc.data().date);
+            setLoading(false);
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    setLoading(true);
     // get the job post from the firestore database
-    firebase
-      .firestore()
-      .collection("jobPosts")
-      .doc(id)
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          setTitle(doc.data().title);
-          setDescription(doc.data().description);
-          setSalary(doc.data().salary);
-          setdate(doc.data().date);
-          setLoading(false);
-        }
-      });
+    getJobPost();
   }, []);
-
-  const handleDescriptionChange = (value) => {
-    setDescription(value);
-  };
-
-  const handleSalaryChange = (value) => {
-    setSalary(value);
-  };
 
   const handleUpdate = async () => {
     if (title && salary && description) {
@@ -141,8 +142,8 @@ const JobUpdate = ({ navigation, route }) => {
                 style={styles.inputDescription}
                 placeholder="Description"
                 value={description}
-                onChangeText={handleDescriptionChange}
-                maxLength={500}
+                onChangeText={(text) => setDescription(text)}
+                // maxLength={1000}
                 multiline
                 required
               />
@@ -150,7 +151,7 @@ const JobUpdate = ({ navigation, route }) => {
                 style={styles.input}
                 placeholder="Salary"
                 value={salary}
-                onChangeText={handleSalaryChange}
+                onChangeText={(text) => setSalary(text)}
                 keyboardType="numeric"
                 required
               />
