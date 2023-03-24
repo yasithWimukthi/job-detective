@@ -19,7 +19,6 @@ const LoginPage = () => {
         navigation.navigate("Register");
     }
 
-
     const handleLogin = () => {
         // Handle login logic here
         signInWithEmailAndPassword(auth, email, password)
