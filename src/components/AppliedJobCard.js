@@ -71,8 +71,6 @@ const AppliedJobCard = ({item, iconBG,removeItem,changeIsCancelPressed}) => {
                 {/*</View>*/}
                 {/*cancel button*/}
                 <TouchableOpacity
-                    style={{
-                        backgroundColor: "#DC3545",
                         borderRadius: 10,
                         padding: 10,
                         marginTop: 10,
@@ -114,6 +112,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         marginBottom: 5,
         color: "#3f3f3f",
+                    style={{
+                        backgroundColor: "#DC3545",
     },
     salary: {
         fontSize: 12,
