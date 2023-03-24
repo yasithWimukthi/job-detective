@@ -11,7 +11,7 @@ import JobPost from "./src/screens/JobPosts";
 import JobCreate from "./src/screens/JobCreate";
 import JobMyPosts from "./src/screens/JobMyPosts";
 import AddNewCompany from "./src/screens/AddNewCompany";
-import LoginScreen from "./src/screens/LoginScreen";
+import LoginPage from "./src/screens/LoginPage";
 import JobView from "./src/screens/JobView";
 import UserProfile from "./src/screens/UserProfile";
 import JobUpdate from "./src/screens/JobUpdate";
@@ -86,7 +86,7 @@ function MyDrawer() {
         <Drawer.Screen name="Jobs" component={JobPost} />
         <Drawer.Screen name="Interviews" component={InterviewPreparation} />
         <Drawer.Screen name="Register" component={RegisterScreen} />
-        <Drawer.Screen name="Login" component={LoginScreen} />
+        <Drawer.Screen name="Login" component={LoginPage} />
         <Drawer.Screen name="Profile" component={UserProfile} />
       </Drawer.Navigator>
     </NativeBaseProvider>
@@ -108,7 +108,7 @@ export default function App() {
         <Stack.Screen name="Add New Company" component={AddNewCompany} />
         <Stack.Screen name="Job View" component={JobView} />
         <Stack.Screen name="Update Job Posting" component={JobUpdate} />
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Login" component={LoginPage} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Profile" component={UserProfile} />
         <Stack.Screen name="Edit Company" component={EditCompany} />
