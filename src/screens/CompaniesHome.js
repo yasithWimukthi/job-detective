@@ -115,12 +115,13 @@ export default function CompaniesHome({ navigation, route }) {
   return (
     <View style={{ padding: 10, height: "100%" }}>
       <HStack>
-        <Box width="50%" marginRight={1}>
+        <Box width="49%" marginRight={1}>
           <Select
             height="45"
             selectedValue={selectedLocation}
-            color="primary.50"
             // backgroundColor="primary.900"
+            color="black"
+            backgroundColor="#c4c4c4"
             accessibilityLabel="Select a Location"
             placeholder="Select a Location"
             onValueChange={(itemValue) => setSelectedLocation(itemValue)}
@@ -136,12 +137,12 @@ export default function CompaniesHome({ navigation, route }) {
             ))}
           </Select>
         </Box>
-        <Box width="50%" marginLeft={1}>
+        <Box width="49%" marginLeft={1}>
           <Select
             height="45"
             selectedValue={selectedIndustry}
-            color="primary.50"
-            // backgroundColor="primary.900"
+            color="black"
+            backgroundColor="#c4c4c4"
             accessibilityLabel="Select an Industry"
             placeholder="Select an Industry"
             onValueChange={(itemValue) => setSelectedIndustry(itemValue)}
