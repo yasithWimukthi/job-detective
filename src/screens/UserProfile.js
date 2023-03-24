@@ -5,7 +5,7 @@ import {firebase, storage} from "../../firebaseConfig";
 import * as DocumentPicker from "expo-document-picker";
 import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {useNavigation} from "@react-navigation/native";
+import {useIsFocused, useNavigation} from "@react-navigation/native";
 import JobCard from "../components/JobCard";
 import {FloatingAction} from "react-native-floating-action";
 import AppliedJobCard from "../components/AppliedJobCard";
@@ -53,6 +53,9 @@ function UserProfile(props) {
     const [blobFile, setBlobFile] = useState(null);
     const [resumeUrl, setResumeUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [userId, setUserId] = useState(firebase.auth()?.currentUser?.uid);
+    const isFocused = useIsFocused();
+    const [isCancelPressed, setIsCancelPressed] = useState(false);
 
     useEffect(() => {
         // get current user document
@@ -67,11 +70,20 @@ function UserProfile(props) {
             });
 
         getAppliedJobsOfUser(firebase.auth()?.currentUser?.uid);
-    }, [firebase.auth()?.currentUser?.uid]);
+    }, [userId]);
 
-    // useEffect(() => {
-    //     getAppliedJobsOfUser(firebase.auth()?.currentUser?.uid);
-    // });
+    useEffect(() => {
+        getAppliedJobsOfUser(firebase.auth()?.currentUser?.uid);
+    },[isFocused,isCancelPressed]);
+
+    const changeIsCancelPressed = () => {
+        setIsCancelPressed(!isCancelPressed);
+    }
+
+    // remove array element matches the id in applied jobs array
+    const removeItem = (id) => {
+        return appliedJobs.filter((item) => item.id !== id);
+    }
 
 
     const getCurrentUser = async () => {
@@ -96,7 +108,7 @@ function UserProfile(props) {
     const getAppliedJobsOfUser = async (userID) => {
         const appliedJobsArr = [];
         try {
-            await firebase.firestore().collection('users').doc(firebase.auth()?.currentUser?.uid).get()
+            await firebase.firestore().collection('users').doc(userId).get()
                 .then((doc) => {
                     if (doc.exists) {
                         const appliedJobs = doc.data().appliedJobs; // get the array of applied jobs from the document data
@@ -248,7 +260,7 @@ function UserProfile(props) {
                 appliedJobs.length > 0 ?
                     <FlatList
                         data={appliedJobs}
-                        renderItem={({item}) => <AppliedJobCard item={item}/>}
+                        renderItem={({item}) => <AppliedJobCard item={item} changeIsCancelPressed={changeIsCancelPressed} removeItem={removeItem}/>}
                         keyExtractor={(item) => item.id}
                         style={{marginTop: 20}}
                     />
